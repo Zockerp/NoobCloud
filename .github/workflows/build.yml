@@ -18,11 +18,13 @@ jobs:
       - name: Build with gradle
         run: ./gradlew shadowJar
       - name: Prepare upload
-        run: mkdir -p plugin/build/libs/libraries && cp plugin/build/libs/NoobCloudPlugin.jar plugin/build/libs/libraries/NoobCloudPlugin.jar
+        run: |
+          cp cloud/build/libs/*.jar .
+          mkdir libraries && cp plugin/build/libs/*.jar libraries/
       - name: Upload NoobCloud
         uses: actions/upload-artifact@v3
         with:
           name: NoobCloud
           path: |
-            cloud/build/libs/*.jar
-            plugin/build/libs/libraries
+            *.jar
+            libraries
