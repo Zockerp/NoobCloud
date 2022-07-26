@@ -1,0 +1,14 @@
+config:
+  address: '127.0.0.1'
+  port: 50000
+  proxyStartPort: 25565
+  gameStartPort: 30000
+  javaPath: 'java'
+
+playerDatabase:
+  enabled: false
+  host: 'localhost'
+  port: 3306
+  database: 'noobcloud'
+  username: 'username'
+  password: 'password'

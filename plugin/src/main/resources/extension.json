@@ -1,0 +1,13 @@
+{
+  "entrypoint": "xyz.luccboy.noobcloud.plugin.minestom.NoobCloudMinestomPlugin",
+  "name": "NoobCloud",
+  "version": "1.0-SNAPSHOT",
+  "externalDependencies": {
+    "repositories": [
+      {"name": "Central", "url": "https://repo1.maven.org/maven2/"}
+    ],
+    "artifacts": [
+      "io.netty:netty-all:4.1.79.Final"
+    ]
+  }
+}

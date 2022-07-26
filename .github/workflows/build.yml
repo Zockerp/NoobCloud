@@ -1,0 +1,28 @@
+name: Build NoobCloud
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 18
+        uses: actions/setup-java@v3
+        with:
+          java-version: '18'
+          distribution: 'temurin'
+          cache: gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with gradle
+        run: ./gradlew shadowJar
+      - name: Prepare upload
+        run: mkdir -p plugin/build/libs/libraries && cp plugin/build/libs/NoobCloudPlugin.jar plugin/build/libs/libraries/NoobCloudPlugin.jar
+      - name: Upload NoobCloud
+        uses: actions/upload-artifact@v3
+        with:
+          name: NoobCloud
+          path: |
+            cloud/build/libs/*.jar
+            plugin/build/libs/libraries

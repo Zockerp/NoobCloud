@@ -1,0 +1,6 @@
+proxies:
+  - name: proxy
+    memory: 256
+    minAmount: 1
+    maxAmount: 1
+    startPlayerCount: -1
