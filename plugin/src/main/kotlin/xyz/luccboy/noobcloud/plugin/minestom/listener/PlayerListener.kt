@@ -22,8 +22,7 @@ class PlayerListener {
 
                 if (NoobCloudMinestomPlugin.instance.startPlayerCount >= 0) {
                     if (MinecraftServer.getConnectionManager().onlinePlayers.size >= NoobCloudMinestomPlugin.instance.startPlayerCount) {
-                        NoobCloudMinestomPlugin.instance.nettyClient.sendPacket(RequestServerStartPacket(
-                            NoobCloudMinestomPlugin.instance.group, GroupType.GAME.name))
+                        NoobCloudMinestomPlugin.instance.nettyClient.sendPacket(RequestServerStartPacket(NoobCloudMinestomPlugin.instance.group, GroupType.GAME.name))
                     }
                 }
             }

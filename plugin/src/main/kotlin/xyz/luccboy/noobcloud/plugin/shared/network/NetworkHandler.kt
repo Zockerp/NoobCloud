@@ -119,8 +119,8 @@ class NetworkHandler(private val groupType: GroupType, private val nettyClient: 
                 }
             }
             is ServerUpdateMotdPacket -> {
-                val serverUpdateGameStatePacket: ServerUpdateMotdPacket = packet
-                noobCloudAPI.servers.first { it.uuid == serverUpdateGameStatePacket.uuid }.currentMotd = serverUpdateGameStatePacket.motd
+                val serverUpdateMotdPacket: ServerUpdateMotdPacket = packet
+                noobCloudAPI.servers.first { it.uuid == serverUpdateMotdPacket.uuid }.currentMotd = serverUpdateMotdPacket.motd
             }
             // API - Player
             is PlayerAddPacket -> {

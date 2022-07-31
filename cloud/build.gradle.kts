@@ -12,7 +12,7 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-toml:2.13.3")
     // Netty - communication
     implementation("io.netty:netty-all:4.1.79.Final")
-    // JLine3
+    // JLine3 - terminal
     implementation("org.jline:jline-reader:3.21.0")
     implementation("org.jline:jline-terminal:3.21.0")
     implementation("org.jline:jline-terminal-jansi:3.21.0")

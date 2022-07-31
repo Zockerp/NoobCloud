@@ -19,6 +19,7 @@ jobs:
         run: ./gradlew shadowJar
       - name: Prepare upload
         run: |
+          cp scripts/* .
           cp cloud/build/libs/*.jar .
           mkdir libraries && cp plugin/build/libs/*.jar libraries/
       - name: Upload NoobCloud
@@ -28,3 +29,5 @@ jobs:
           path: |
             *.jar
             libraries
+            start.bat
+            start.sh

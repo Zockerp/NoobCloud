@@ -10,15 +10,14 @@ import io.github.heliumdioxid.database.mysql.MySQLDatabaseConnection
 import io.github.heliumdioxid.database.mysql.config.MySQLConnectionConfig
 import io.github.heliumdioxid.database.mysql.utils.Function
 import java.sql.ResultSet
+import java.sql.SQLException
 import java.util.*
 import java.util.concurrent.CompletableFuture
-
 
 class DatabaseManager(private val enabled: Boolean, private val host: String, private val user: String, private val password: String, private val database: String, private val port: Int) {
 
     private lateinit var databaseConnection: MySQLDatabaseConnection
     private lateinit var connectionHandler: MySQLConnectionHandler
-
 
     fun connect(): DatabaseManager {
         if (enabled) {
@@ -27,7 +26,7 @@ class DatabaseManager(private val enabled: Boolean, private val host: String, pr
             connectionConfig.applyDefaultHikariConfig()
 
             databaseConnection = MySQLDatabaseConnection(connectionConfig)
-            connectionHandler = this.databaseConnection.connect().join().get()
+            connectionHandler = this.databaseConnection.connect().join().orElseThrow { SQLException("Database-connection could not be established!") }
 
             executeUpdate("CREATE TABLE IF NOT EXISTS playerdata (uuid VARCHAR(36), name TEXT, PRIMARY KEY(uuid))").join()
         }
@@ -36,7 +35,7 @@ class DatabaseManager(private val enabled: Boolean, private val host: String, pr
 
     fun disconnect() {
         if (enabled) {
-            databaseConnection.disconnect()
+            databaseConnection.disconnect().join()
         }
     }
 

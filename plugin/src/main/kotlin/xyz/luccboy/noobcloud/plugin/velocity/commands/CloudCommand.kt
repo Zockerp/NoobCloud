@@ -33,28 +33,28 @@ class CloudCommand : SimpleCommand {
             if (arguments[0].equals("listGroups", true)) {
                 sender.sendMessage(Component.text(prefix))
                 sender.sendMessage(Component.text(prefix + "Proxy-groups§8:"))
-                val proxyGroups: List<Group> = NoobCloudVelocityPlugin.instance.noobCloudAPI.getAllProxyGroups()
+                val proxyGroups: List<Group> = NoobCloudAPI.instance.getAllProxyGroups()
                 proxyGroups.forEachIndexed { index, group ->
                     val char: String = if (index == proxyGroups.size.dec()) "┗" else "┠"
-                    sender.sendMessage(Component.text("$prefix§8    $char§7 §b${group.name}§8(§7${group.groupType.name.lowercase().replaceFirstChar(Char::titlecase)}§8): §7players§8: §b" + NoobCloudVelocityPlugin.instance.noobCloudAPI.getGroupOnlineCount(group.name)))
+                    sender.sendMessage(Component.text("$prefix§8    $char§7 §b${group.name}§8(§7${group.groupType.name.lowercase().replaceFirstChar(Char::titlecase)}§8): §7players§8: §b" + NoobCloudAPI.instance.getGroupOnlineCount(group.name)))
                 }
                 sender.sendMessage(Component.text(prefix + "Game-groups§8:"))
-                val gameGroups: List<Group> = NoobCloudVelocityPlugin.instance.noobCloudAPI.getAllGameGroups()
+                val gameGroups: List<Group> = NoobCloudAPI.instance.getAllGameGroups()
                 gameGroups.forEachIndexed { index, group ->
                     val char: String = if (index == gameGroups.size.dec()) "┗" else "┠"
-                    sender.sendMessage(Component.text("$prefix§8    $char§7 §b${group.name}§8(§7${group.groupType.name.lowercase().replaceFirstChar(Char::titlecase)}§8): §7players§8: §b" + NoobCloudVelocityPlugin.instance.noobCloudAPI.getGroupOnlineCount(group.name)))
+                    sender.sendMessage(Component.text("$prefix§8    $char§7 §b${group.name}§8(§7${group.groupType.name.lowercase().replaceFirstChar(Char::titlecase)}§8): §7players§8: §b" + NoobCloudAPI.instance.getGroupOnlineCount(group.name)))
                 }
                 sender.sendMessage(Component.text(prefix))
             } else if (arguments[0].equals("listServers", true)) {
                 sender.sendMessage(Component.text(prefix))
                 sender.sendMessage(Component.text(prefix + "Proxies§8:"))
-                val proxies: List<Server> = NoobCloudVelocityPlugin.instance.noobCloudAPI.getAllProxyServers()
+                val proxies: List<Server> = NoobCloudAPI.instance.getAllProxyServers()
                 proxies.forEachIndexed { index, server ->
                     val char: String = if (index == proxies.size.dec()) "┗" else "┠"
                     sender.sendMessage(Component.text("$prefix§8    $char§7 §b${server.name}§8(§7${server.groupName}§8)§8: §7players§8: §b${server.getOnlineCount()}"))
                 }
                 sender.sendMessage(Component.text(prefix + "Games§8:"))
-                val games: List<Server> = NoobCloudVelocityPlugin.instance.noobCloudAPI.getAllGameServers()
+                val games: List<Server> = NoobCloudAPI.instance.getAllGameServers()
                 games.forEachIndexed { index, server ->
                     val char: String = if (index == games.size.dec()) "┗" else "┠"
                     sender.sendMessage(Component.text("$prefix§8    $char§7 §b${server.name}§8(§7${server.groupName}§8)§8: §7players§8: §b${server.getOnlineCount()}"))
@@ -75,17 +75,17 @@ class CloudCommand : SimpleCommand {
         } else if (arguments.size == 2) {
             if (arguments[0].equals("start", true)) {
                 val groupName: String = arguments[1]
-                NoobCloudVelocityPlugin.instance.noobCloudAPI.getGroup(groupName).ifPresentOrElse({
+                NoobCloudAPI.instance.getGroup(groupName).ifPresentOrElse({
                     NoobCloudVelocityPlugin.instance.nettyClient.sendPacket(RequestServerStartPacket(it.name, GroupType.GAME.name))
                     sender.sendMessage(Component.text("$prefix§7A server of the group §b${it.name} §7will be started§8."))
                 }, {
-                    NoobCloudVelocityPlugin.instance.noobCloudAPI.getGroup(groupName).ifPresentOrElse({
+                    NoobCloudAPI.instance.getGroup(groupName).ifPresentOrElse({
                         NoobCloudVelocityPlugin.instance.nettyClient.sendPacket(RequestServerStartPacket(it.name, GroupType.PROXY.name))
                         sender.sendMessage(Component.text("$prefix§7A server of the group §b${it.name} §7will be started§8."))
                     }, { sender.sendMessage(Component.text("$prefix§cThere is no group with this name!")) })
                 })
             } else if (arguments[0].equals("stop", true)) {
-                NoobCloudVelocityPlugin.instance.noobCloudAPI.getServerByName(arguments[1]).ifPresentOrElse({
+                NoobCloudAPI.instance.getServerByName(arguments[1]).ifPresentOrElse({
                     NoobCloudVelocityPlugin.instance.nettyClient.sendPacket(RequestServerStopPacket(it.name, it.uuid))
                     sender.sendMessage(Component.text("$prefix§7The server(s) §b${it.name} §7will be stopped§8."))
                 }, { sender.sendMessage(Component.text("$prefix§cThere are no servers with this name!")) })
@@ -111,10 +111,10 @@ class CloudCommand : SimpleCommand {
             val suggestions: Stream<String> = listOf("listGroups", "listServers", "start", "stop").stream()
             return CompletableFuture.completedFuture(suggestions.filter { regionMatches(it, arguments[0]) }.toList())
         } else if (arguments.size == 2 && arguments[0].equals("start", true)) {
-            val suggestion: Stream<String> = NoobCloudVelocityPlugin.instance.noobCloudAPI.getAllGroups().map { it.name }.stream()
+            val suggestion: Stream<String> = NoobCloudAPI.instance.getAllGroups().map { it.name }.stream()
             return CompletableFuture.completedFuture(suggestion.filter { regionMatches(it, arguments[1]) }.toList())
         } else if (arguments.size == 2 && arguments[0].equals("stop", true)) {
-            val suggestion: Stream<String> = NoobCloudVelocityPlugin.instance.noobCloudAPI.getAllServers().map { it.name }.stream()
+            val suggestion: Stream<String> = NoobCloudAPI.instance.getAllServers().map { it.name }.stream()
             return CompletableFuture.completedFuture(suggestion.filter { regionMatches(it, arguments[1]) }.toList())
         }
 

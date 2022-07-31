@@ -57,7 +57,6 @@ class NoobCloud {
         nettyServer = NettyServer()
 
         registerCommands()
-        Runtime.getRuntime().addShutdownHook(Thread { forceStop() })
         launch(Dispatchers.IO) { consoleReader.start() }
     }
 
@@ -69,17 +68,12 @@ class NoobCloud {
         commandHandler.registerCommand(RestartCommand())
     }
 
-    fun forceStop() {
+    fun stop() {
         stopping = true
+        nettyServer.shutdown()
         processManager.servers.values.forEach { serverProcess -> serverProcess.process.destroyForcibly() }
-    }
-
-    fun checkShutdown() {
-        if (stopping && processManager.servers.isEmpty()) {
-            File("temp").also { if (it.exists()) it.deleteRecursively() }
-            nettyServer.shutdown()
-            exitProcess(0)
-        }
+        File("temp").also { if (it.exists()) it.deleteRecursively() }
+        exitProcess(0)
     }
 
 }

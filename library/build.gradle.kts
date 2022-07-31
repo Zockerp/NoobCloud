@@ -10,7 +10,7 @@ dependencies {
 }
 
 noArg {
-    annotation("xyz.luccboy.noobcloud.annotations.NoArg")
+    annotation("xyz.luccboy.noobcloud.library.annotations.NoArg")
 }
 
 tasks.shadowJar {

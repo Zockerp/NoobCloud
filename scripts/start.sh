@@ -1,0 +1,1 @@
+screen -dm -S NoobCloud java -jar NoobCloud-1.0-SNAPSHOT.jar

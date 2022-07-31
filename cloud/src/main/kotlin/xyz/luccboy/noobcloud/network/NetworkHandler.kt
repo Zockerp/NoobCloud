@@ -66,8 +66,6 @@ class NetworkHandler : SimpleChannelInboundHandler<Packet>() {
                 NoobCloud.instance.nettyServer.channelsByUUID.remove(proxyServerStoppedPacket.uuid)
                 NoobCloud.instance.processManager.servers.remove(proxyServerStoppedPacket.uuid)
                 NoobCloud.instance.nettyServer.sendToAllClients(ServerRemovePacket(proxyServerStoppedPacket.name, proxyServerStoppedPacket.uuid))
-
-                NoobCloud.instance.checkShutdown()
             }
 
             is GameServerStartedPacket -> {
@@ -101,8 +99,6 @@ class NetworkHandler : SimpleChannelInboundHandler<Packet>() {
                 NoobCloud.instance.nettyServer.channelsByUUID.remove(gameServerStoppedPacket.uuid)
                 NoobCloud.instance.processManager.servers.remove(gameServerStoppedPacket.uuid)
                 NoobCloud.instance.nettyServer.sendToAllClients(ServerRemovePacket(gameServerStoppedPacket.name, gameServerStoppedPacket.uuid))
-
-                NoobCloud.instance.checkShutdown()
             }
 
             // API - Messages
@@ -140,7 +136,7 @@ class NetworkHandler : SimpleChannelInboundHandler<Packet>() {
                 NoobCloud.instance.nettyServer.proxyChannels.writeAndFlush(SendPlayerPacket(sendPlayerRequestPacket.userUUID, sendPlayerRequestPacket.serverName))
             }
 
-            // Server
+            // API - Server
             is RequestServerStartPacket -> {
                 val requestServerStartPacket: RequestServerStartPacket = packet
                 val groupType: GroupType = GroupType.valueOf(requestServerStartPacket.groupType)
@@ -204,6 +200,10 @@ class NetworkHandler : SimpleChannelInboundHandler<Packet>() {
                         port = proxyProcess.port,
                         gameState = GameState.PROXY.name
                     ))
+                    channel.writeAndFlush(ServerUpdateOnlineCountPacket(
+                        uuid = proxyProcess.uuid,
+                        playerOnlineCount = proxyProcess.onlineCount
+                    ))
                 }
                 NoobCloud.instance.processManager.getGames().forEach { gameProcess ->
                     channel.writeAndFlush(ServerAddPacket(
@@ -213,6 +213,10 @@ class NetworkHandler : SimpleChannelInboundHandler<Packet>() {
                         groupType = GroupType.GAME.name,
                         port = gameProcess.port,
                         gameState = gameProcess.gameState.name
+                    ))
+                    channel.writeAndFlush(ServerUpdateOnlineCountPacket(
+                        uuid = gameProcess.uuid,
+                        playerOnlineCount = gameProcess.onlineCount
                     ))
                 }
             }

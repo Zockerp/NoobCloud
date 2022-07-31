@@ -14,6 +14,7 @@ import xyz.luccboy.noobcloud.plugin.shared.database.DatabaseManager
 import xyz.luccboy.noobcloud.plugin.shared.network.NettyClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import xyz.luccboy.noobcloud.library.network.packets.api.server.SetMotdPacket
 import java.util.*
 
 class AbstractNoobCloudAPI(private val nettyClient: NettyClient, private val databaseManager: DatabaseManager) : NoobCloudAPI() {
@@ -36,9 +37,7 @@ class AbstractNoobCloudAPI(private val nettyClient: NettyClient, private val dat
         }
         return@runBlocking Optional.empty()
     }
-    override fun connectCloudPlayer(cloudPlayer: CloudPlayer, serverName: String) {
-        nettyClient.sendPacket(SendPlayerRequestPacket(cloudPlayer.uuid, serverName))
-    }
+    override fun connectCloudPlayer(cloudPlayer: CloudPlayer, serverName: String) = nettyClient.sendPacket(SendPlayerRequestPacket(cloudPlayer.uuid, serverName))
 
     override fun getUsernameByUUID(uuid: UUID): Optional<String> = databaseManager.getNameByUUID(uuid)
     override fun getUUIDByUsername(username: String): Optional<UUID> = databaseManager.getUUIDByName(username)
@@ -79,18 +78,18 @@ class AbstractNoobCloudAPI(private val nettyClient: NettyClient, private val dat
         return@runBlocking if (server == null) Optional.empty() else Optional.of(server)
     }
 
-    override fun startServer(groupName: String) {
-        getGroup(groupName).ifPresent{
-            nettyClient.sendPacket(RequestServerStartPacket(it.name, it.groupType.name))
-        }
+    override fun startServer(groupName: String) = getGroup(groupName).ifPresent{
+        nettyClient.sendPacket(RequestServerStartPacket(it.name, it.groupType.name))
     }
 
-    override fun stopServer(name: String) {
-        getServerByName(name).ifPresent {
-            nettyClient.sendPacket(RequestServerStartPacket(it.name, GroupType.PROXY.name))
-        }
+    override fun stopServer(name: String) = getServerByName(name).ifPresent {
+        nettyClient.sendPacket(RequestServerStartPacket(it.name, GroupType.PROXY.name))
     }
 
     override fun getMotd(serverName: String): String = servers.first { it.name == serverName }.getMotd()
+    override fun setMotd(serverName: String, motd: String) = getServerByName(serverName).ifPresent { server ->
+        servers.first { it.uuid == server.uuid }.currentMotd = motd
+        nettyClient.sendPacket(SetMotdPacket(server.uuid, motd))
+    }
 
 }

@@ -13,13 +13,6 @@ class StopCommand : Command {
 
     override fun execute(args: Array<String>) {
         NoobCloud.instance.logger.info("NoobCloud will be stopped.")
-        NoobCloud.instance.logger.info("Waiting for all servers to be stopped...")
-        NoobCloud.instance.logger.info("Press CTRL+C to force stop NoobCloud, this can cause errors.")
-        NoobCloud.instance.stopping = true
-        NoobCloud.instance.checkShutdown()
-
-        NoobCloud.instance.processManager.servers.values.toList().forEach {
-            NoobCloud.instance.nettyServer.channelsByUUID[it.uuid]?.writeAndFlush(ServerStopPacket(it.name, it.uuid))
-        }
+        NoobCloud.instance.stop()
     }
 }

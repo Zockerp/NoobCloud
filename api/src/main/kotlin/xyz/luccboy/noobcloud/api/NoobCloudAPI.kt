@@ -162,4 +162,12 @@ abstract class NoobCloudAPI {
      * @return The motd of the server
      */
     abstract fun getMotd(serverName: String): String
+
+
+    /**
+     * Sets the motd of a server
+     * @param serverName The target server
+     * @param motd The new motd
+     */
+    abstract fun setMotd(serverName: String, motd: String)
 }

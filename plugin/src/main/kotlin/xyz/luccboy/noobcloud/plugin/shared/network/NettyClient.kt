@@ -6,7 +6,6 @@ import xyz.luccboy.noobcloud.library.network.codec.PacketEncoder
 import xyz.luccboy.noobcloud.library.network.protocol.Packet
 import xyz.luccboy.noobcloud.library.network.protocol.PacketRegistry
 import xyz.luccboy.noobcloud.plugin.minestom.NoobCloudMinestomPlugin
-import xyz.luccboy.noobcloud.plugin.shared.api.AbstractNoobCloudAPI
 import xyz.luccboy.noobcloud.plugin.velocity.NoobCloudVelocityPlugin
 import io.netty.bootstrap.Bootstrap
 import io.netty.channel.Channel
@@ -33,7 +32,7 @@ class NettyClient(groupType: GroupType) {
                     channel.pipeline()
                         .addLast("packet-encoder", PacketEncoder(packetRegistry))
                         .addLast("packet-decoder",
-                            xyz.luccboy.noobcloud.library.network.codec.PacketDecoder(packetRegistry)
+                            PacketDecoder(packetRegistry)
                         )
                 }
             }).validate()

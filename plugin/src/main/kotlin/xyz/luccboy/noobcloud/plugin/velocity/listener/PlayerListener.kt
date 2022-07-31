@@ -1,5 +1,6 @@
 package xyz.luccboy.noobcloud.plugin.velocity.listener
 
+import com.velocitypowered.api.event.PostOrder
 import xyz.luccboy.noobcloud.api.group.GroupType
 import xyz.luccboy.noobcloud.library.network.packets.api.player.PlayerJoinProxyPacket
 import xyz.luccboy.noobcloud.library.network.packets.api.player.PlayerQuitProxyPacket
@@ -9,6 +10,7 @@ import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.connection.DisconnectEvent
 import com.velocitypowered.api.event.player.KickedFromServerEvent
 import com.velocitypowered.api.event.player.KickedFromServerEvent.RedirectPlayer
+import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent
 import com.velocitypowered.api.event.player.ServerPostConnectEvent
 import com.velocitypowered.api.event.player.ServerPreConnectEvent
 import com.velocitypowered.api.proxy.Player
@@ -21,21 +23,19 @@ import java.util.*
 class PlayerListener {
 
     // Player-Join
-    @Subscribe
-    fun onServerPreConnect(event: ServerPreConnectEvent) {
+    @Subscribe(order = PostOrder.FIRST)
+    fun onChoose(event: PlayerChooseInitialServerEvent) {
         val player: Player = event.player
         val freeLobby: Optional<RegisteredServer> = getFreeLobby()
 
-        if (event.previousServer == null) {
-            freeLobby.ifPresentOrElse({ server ->
-                event.result = ServerPreConnectEvent.ServerResult.allowed(server)
-            }, {
-                player.disconnect(Component.text("§cEs konnte kein passender Server gefunden werden!"))
-            })
-        }
+        freeLobby.ifPresentOrElse({ server ->
+            event.setInitialServer(server)
+        }, {
+            player.disconnect(Component.text("§cNo suitable server could be found!"))
+        })
     }
 
-    @Subscribe
+    @Subscribe(order = PostOrder.FIRST)
     fun onServerPostConnect(event: ServerPostConnectEvent) {
         if (event.previousServer == null) {
             NoobCloudVelocityPlugin.instance.nettyClient.sendPacket(PlayerJoinProxyPacket(NoobCloudVelocityPlugin.instance.uuid, NoobCloudVelocityPlugin.instance.group))
@@ -43,15 +43,14 @@ class PlayerListener {
 
             if (NoobCloudVelocityPlugin.instance.startPlayerCount >= 0) {
                 if (event.player.currentServer.get().server.playersConnected.size >= NoobCloudVelocityPlugin.instance.startPlayerCount) {
-                    NoobCloudVelocityPlugin.instance.nettyClient.sendPacket(RequestServerStartPacket(
-                        NoobCloudVelocityPlugin.instance.group, GroupType.PROXY.name))
+                    NoobCloudVelocityPlugin.instance.nettyClient.sendPacket(RequestServerStartPacket(NoobCloudVelocityPlugin.instance.group, GroupType.PROXY.name))
                 }
             }
         }
     }
 
     // Player-Quit
-    @Subscribe
+    @Subscribe(order = PostOrder.FIRST)
     fun onDisconnect(event: DisconnectEvent) {
         val player: Player = event.player
         if (player.currentServer.isPresent) {
@@ -60,16 +59,16 @@ class PlayerListener {
     }
 
     // Player-Kick
-    @Subscribe
+    @Subscribe(order = PostOrder.FIRST)
     fun onServerKick(event: KickedFromServerEvent) {
         val player: Player = event.player
-        if (!player.currentServer.isPresent) return
 
         val freeLobby: Optional<RegisteredServer> = getFreeLobby()
         freeLobby.ifPresentOrElse({ server ->
-            event.result = RedirectPlayer.create(server)
+            if (player.currentServer.isPresent) event.result = RedirectPlayer.create(server)
         }, {
             player.disconnect(Component.text("§cCould not connect to a default or fallback server."))
+            if (!player.currentServer.isPresent) NoobCloudVelocityPlugin.instance.nettyClient.sendPacket(PlayerQuitProxyPacket(NoobCloudVelocityPlugin.instance.uuid, NoobCloudVelocityPlugin.instance.group))
         })
     }
 

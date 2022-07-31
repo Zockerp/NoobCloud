@@ -28,5 +28,8 @@ data class AbstractServer(
         nettyClient.sendPacket(DistributeServerMessagePacket(uuid, message))
     }
     override fun getMotd(): String = currentMotd
-    override fun setMotd(motd: String) = nettyClient.sendPacket(SetMotdPacket(uuid, motd))
+    override fun setMotd(motd: String) {
+        currentMotd = motd
+        nettyClient.sendPacket(SetMotdPacket(uuid, motd))
+    }
 }

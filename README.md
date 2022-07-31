@@ -14,8 +14,8 @@ much more features than small teams need.
 - [Velocity](https://github.com/Minestom/Minestom)-Support
 
 ## Documentation
-The documentation for all features of NoobCloud and its API is available under https://noobcloud.luccboy.tk.
-You can also find the KDocs/JavaDocs here: https://docs.luccboy.tk.
+The wiki for all features of NoobCloud and its API is available [here](https://noobcloud.luccboy.tk).
+You can also find the KDocs/JavaDocs [here](https://docs.luccboy.tk).
 
 ## Contributing:
 First of all, thank you for considering participating in this project. Thus, I am very open to any form of constructive 
@@ -26,3 +26,4 @@ feedback, I appreciate pull requests to update and enhance this system. Please t
 - [ ] Global templates
 - [ ] Send commands to servers
 - [ ] BungeeCord-Support (if requested)
+- [ ] [Krypton](https://github.com/KryptonMC/Krypton)-Support

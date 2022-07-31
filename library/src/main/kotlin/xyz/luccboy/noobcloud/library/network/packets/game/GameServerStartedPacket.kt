@@ -1,6 +1,6 @@
 package xyz.luccboy.noobcloud.library.network.packets.game
 
-import xyz.luccboy.noobcloud.annotations.NoArg
+import xyz.luccboy.noobcloud.library.annotations.NoArg
 import xyz.luccboy.noobcloud.library.network.protocol.Packet
 import io.netty.buffer.ByteBuf
 import java.util.UUID

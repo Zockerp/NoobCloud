@@ -28,7 +28,7 @@ class ConsoleReader {
                 }
             } catch (exception: UserInterruptException) {
                 NoobCloud.instance.logger.info("NoobCloud will be stopped.")
-                NoobCloud.instance.forceStop()
+                NoobCloud.instance.stop()
                 exitProcess(0)
             } catch (exception: Exception) {
                 return

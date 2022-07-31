@@ -2,6 +2,7 @@ import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
     id("org.jetbrains.dokka") version "1.7.10"
+    `maven-publish`
 }
 
 repositories {
@@ -10,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.github.Minestom:Minestom:9e5de35fa7")
+    compileOnly("com.github.Minestom:Minestom:89a09f326e")
     compileOnly("com.velocitypowered:velocity-api:3.1.2-SNAPSHOT")
 
     dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.7.10")
@@ -25,6 +26,14 @@ tasks.withType<DokkaTask>().configureEach {
         named("main") {
             moduleName.set("NoobCloud")
             includes.from("Module.md")
+        }
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
         }
     }
 }

@@ -13,7 +13,7 @@ dependencies {
     implementation(project(":library"))
     implementation(project(":api"))
     // Minestom and Velocity
-    compileOnly("com.github.Minestom:Minestom:9e5de35fa7")
+    compileOnly("com.github.Minestom:Minestom:89a09f326e")
     compileOnly("com.velocitypowered:velocity-api:3.1.2-SNAPSHOT")
     kapt("com.velocitypowered:velocity-api:3.1.2-SNAPSHOT")
     // Netty - communication
