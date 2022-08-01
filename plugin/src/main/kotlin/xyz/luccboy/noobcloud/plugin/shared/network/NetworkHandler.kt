@@ -1,7 +1,7 @@
 package xyz.luccboy.noobcloud.plugin.shared.network
 
-import xyz.luccboy.noobcloud.api.events.ServerChangeGameStateEvent
-import xyz.luccboy.noobcloud.api.events.ServerMessageEvent
+import xyz.luccboy.noobcloud.api.events.minestom.ServerChangeGameStateMinestomEvent
+import xyz.luccboy.noobcloud.api.events.minestom.ServerMessageMinestomEvent
 import xyz.luccboy.noobcloud.api.group.GroupType
 import xyz.luccboy.noobcloud.api.server.GameState
 import xyz.luccboy.noobcloud.library.network.packets.api.group.GroupAddPacket
@@ -25,6 +25,8 @@ import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import net.kyori.adventure.text.Component
 import net.minestom.server.MinecraftServer
+import xyz.luccboy.noobcloud.api.events.velocity.ServerChangeGameStateVelocityEvent
+import xyz.luccboy.noobcloud.api.events.velocity.ServerMessageVelocityEvent
 import java.net.InetSocketAddress
 
 class NetworkHandler(private val groupType: GroupType, private val nettyClient: NettyClient, private val noobCloudAPI: AbstractNoobCloudAPI) : SimpleChannelInboundHandler<Packet>() {
@@ -56,9 +58,9 @@ class NetworkHandler(private val groupType: GroupType, private val nettyClient: 
             is ServerMessagePacket -> {
                 val serverMessagePacket: ServerMessagePacket = packet
                 if (groupType == GroupType.GAME) {
-                    MinecraftServer.getGlobalEventHandler().call(ServerMessageEvent(serverMessagePacket.message))
+                    MinecraftServer.getGlobalEventHandler().call(ServerMessageMinestomEvent(serverMessagePacket.message))
                 } else {
-                    NoobCloudVelocityPlugin.instance.server.eventManager.fire(ServerMessageEvent(serverMessagePacket.message))
+                    NoobCloudVelocityPlugin.instance.server.eventManager.fireAndForget(ServerMessageVelocityEvent(serverMessagePacket.message))
                 }
             }
             // API - Groups
@@ -113,9 +115,9 @@ class NetworkHandler(private val groupType: GroupType, private val nettyClient: 
                 noobCloudAPI.servers.first { it.uuid == serverUpdateGameStatePacket.uuid }.serverGameState = gameState
 
                 if (groupType == GroupType.GAME) {
-                    MinecraftServer.getGlobalEventHandler().call(ServerChangeGameStateEvent(gameState))
+                    MinecraftServer.getGlobalEventHandler().call(ServerChangeGameStateMinestomEvent(gameState))
                 } else {
-                    NoobCloudVelocityPlugin.instance.server.eventManager.fire(ServerChangeGameStateEvent(gameState))
+                    NoobCloudVelocityPlugin.instance.server.eventManager.fireAndForget(ServerChangeGameStateVelocityEvent(gameState))
                 }
             }
             is ServerUpdateMotdPacket -> {

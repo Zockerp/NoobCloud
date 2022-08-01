@@ -1,14 +1,14 @@
-package xyz.luccboy.noobcloud.api.events
+package xyz.luccboy.noobcloud.api.events.velocity
 
 import xyz.luccboy.noobcloud.api.server.GameState
 import com.google.common.base.MoreObjects
-import net.minestom.server.event.Event
 
 /**
  * The Event called when the gamestate of a server was changed
+ * This event is for Velocity plugins
  * @param gameState The updated [GameState]
  */
-class ServerChangeGameStateEvent(private val gameState: GameState) : Event {
+class ServerChangeGameStateVelocityEvent(private val gameState: GameState) {
 
     /**
      * The new gamestate
@@ -22,5 +22,4 @@ class ServerChangeGameStateEvent(private val gameState: GameState) : Event {
             .add("gameState", gameState)
             .toString()
     }
-
 }
