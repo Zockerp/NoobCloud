@@ -2,9 +2,6 @@ package xyz.luccboy.noobcloud.console.commands
 
 import xyz.luccboy.noobcloud.NoobCloud
 import xyz.luccboy.noobcloud.console.Command
-import xyz.luccboy.noobcloud.library.network.packets.server.ServerStopPacket
-import java.io.File
-import kotlin.system.exitProcess
 
 class StopCommand : Command {
     override val name: String = "stop"

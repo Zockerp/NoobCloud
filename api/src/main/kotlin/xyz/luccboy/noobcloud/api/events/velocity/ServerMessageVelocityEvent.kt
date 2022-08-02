@@ -3,7 +3,7 @@ package xyz.luccboy.noobcloud.api.events.velocity
 import com.google.common.base.MoreObjects
 
 /**
- * The Event called when the server receives a message
+ * The Event called when the server receives a message <br>
  * This event is for Velocity plugins
  * @param message The message
  */

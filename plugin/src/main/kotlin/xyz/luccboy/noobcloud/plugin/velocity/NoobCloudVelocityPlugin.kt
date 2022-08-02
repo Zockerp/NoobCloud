@@ -21,7 +21,7 @@ import com.velocitypowered.api.proxy.server.ServerInfo
 import org.slf4j.Logger
 import java.util.UUID
 
-@Plugin(id = "noobcloud", name = "NoobCloud", version = "1.0-SNAPSHOT", authors = ["Luccboy"])
+@Plugin(id = "noobcloud", name = "NoobCloud", version = "1.0-SNAPSHOT", description = "NoobCloud-Plugin", authors = ["Luccboy"])
 class NoobCloudVelocityPlugin @Inject constructor(val server: ProxyServer, val logger: Logger) {
 
     companion object {

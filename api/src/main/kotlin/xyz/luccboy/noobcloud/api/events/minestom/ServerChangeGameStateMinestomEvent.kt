@@ -5,7 +5,7 @@ import com.google.common.base.MoreObjects
 import net.minestom.server.event.Event
 
 /**
- * The Event called when the gamestate of a server was changed
+ * The Event called when the gamestate of a server was changed <br>
  * This event is for Minestom extensions
  * @param gameState The updated [GameState]
  */

@@ -87,7 +87,7 @@ class CloudCommand : SimpleCommand {
             } else if (arguments[0].equals("stop", true)) {
                 NoobCloudAPI.instance.getServerByName(arguments[1]).ifPresentOrElse({
                     NoobCloudVelocityPlugin.instance.nettyClient.sendPacket(RequestServerStopPacket(it.name, it.uuid))
-                    sender.sendMessage(Component.text("$prefix§7The server(s) §b${it.name} §7will be stopped§8."))
+                    sender.sendMessage(Component.text("$prefix§7The server §b${it.name} §7will be stopped§8."))
                 }, { sender.sendMessage(Component.text("$prefix§cThere are no servers with this name!")) })
             } else {
                 sendHelp(sender)

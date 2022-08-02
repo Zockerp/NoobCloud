@@ -51,7 +51,7 @@ class PlayerListener {
     // Player-Quit
     @Subscribe(order = PostOrder.FIRST)
     fun onDisconnect(event: DisconnectEvent) {
-        NoobCloudVelocityPlugin.instance.nettyClient.sendPacket(PlayerQuitProxyPacket(NoobCloudVelocityPlugin.instance.uuid, NoobCloudVelocityPlugin.instance.group))
+        if (event.player.currentServer.isPresent) NoobCloudVelocityPlugin.instance.nettyClient.sendPacket(PlayerQuitProxyPacket(NoobCloudVelocityPlugin.instance.uuid, NoobCloudVelocityPlugin.instance.group))
     }
 
     // Player-Kick
@@ -61,9 +61,10 @@ class PlayerListener {
 
         val freeLobby: Optional<RegisteredServer> = getFreeLobby(player.currentServer.map { it.serverInfo.name }.orElse(""))
         freeLobby.ifPresentOrElse({ server ->
-            event.result = RedirectPlayer.create(server)
+            if (player.currentServer.isPresent) event.result = RedirectPlayer.create(server)
         }, {
             player.disconnect(Component.text("§cCould not connect to a default or fallback server."))
+            NoobCloudVelocityPlugin.instance.nettyClient.sendPacket(PlayerQuitProxyPacket(NoobCloudVelocityPlugin.instance.uuid, NoobCloudVelocityPlugin.instance.group))
         })
     }
 

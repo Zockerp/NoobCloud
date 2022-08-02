@@ -1,7 +1,14 @@
 package xyz.luccboy.noobcloud.plugin.shared.network
 
+import com.velocitypowered.api.proxy.server.ServerInfo
+import io.netty.channel.ChannelHandlerContext
+import io.netty.channel.SimpleChannelInboundHandler
+import net.kyori.adventure.text.Component
+import net.minestom.server.MinecraftServer
 import xyz.luccboy.noobcloud.api.events.minestom.ServerChangeGameStateMinestomEvent
 import xyz.luccboy.noobcloud.api.events.minestom.ServerMessageMinestomEvent
+import xyz.luccboy.noobcloud.api.events.velocity.ServerChangeGameStateVelocityEvent
+import xyz.luccboy.noobcloud.api.events.velocity.ServerMessageVelocityEvent
 import xyz.luccboy.noobcloud.api.group.GroupType
 import xyz.luccboy.noobcloud.api.server.GameState
 import xyz.luccboy.noobcloud.library.network.packets.api.group.GroupAddPacket
@@ -12,21 +19,13 @@ import xyz.luccboy.noobcloud.library.network.packets.api.player.PlayerRemovePack
 import xyz.luccboy.noobcloud.library.network.packets.api.player.SendPlayerPacket
 import xyz.luccboy.noobcloud.library.network.packets.api.server.*
 import xyz.luccboy.noobcloud.library.network.packets.game.GameServerRegisterPacket
-import xyz.luccboy.noobcloud.library.network.packets.server.ServerStopPacket
 import xyz.luccboy.noobcloud.library.network.protocol.Packet
 import xyz.luccboy.noobcloud.plugin.minestom.NoobCloudMinestomPlugin
-import xyz.luccboy.noobcloud.plugin.velocity.NoobCloudVelocityPlugin
 import xyz.luccboy.noobcloud.plugin.shared.api.AbstractNoobCloudAPI
 import xyz.luccboy.noobcloud.plugin.shared.api.group.AbstractGroup
 import xyz.luccboy.noobcloud.plugin.shared.api.player.AbstractCloudPlayer
 import xyz.luccboy.noobcloud.plugin.shared.api.server.AbstractServer
-import com.velocitypowered.api.proxy.server.ServerInfo
-import io.netty.channel.ChannelHandlerContext
-import io.netty.channel.SimpleChannelInboundHandler
-import net.kyori.adventure.text.Component
-import net.minestom.server.MinecraftServer
-import xyz.luccboy.noobcloud.api.events.velocity.ServerChangeGameStateVelocityEvent
-import xyz.luccboy.noobcloud.api.events.velocity.ServerMessageVelocityEvent
+import xyz.luccboy.noobcloud.plugin.velocity.NoobCloudVelocityPlugin
 import java.net.InetSocketAddress
 
 class NetworkHandler(private val groupType: GroupType, private val nettyClient: NettyClient, private val noobCloudAPI: AbstractNoobCloudAPI) : SimpleChannelInboundHandler<Packet>() {
@@ -45,13 +44,6 @@ class NetworkHandler(private val groupType: GroupType, private val nettyClient: 
 
                 NoobCloudVelocityPlugin.instance.server.allPlayers.filter { it.hasPermission("noobcloud.admin") }.forEach { it.sendMessage(Component.text(
                     NoobCloudVelocityPlugin.instance.prefix + "The server §b" + gameServerRegisterPacket.name + " §7is started§8!")) }
-            }
-            is ServerStopPacket -> {
-                if (groupType == GroupType.PROXY) {
-                    NoobCloudVelocityPlugin.instance.server.shutdown()
-                } else if (groupType == GroupType.GAME) {
-                    MinecraftServer.stopCleanly()
-                }
             }
 
             // API - Messages

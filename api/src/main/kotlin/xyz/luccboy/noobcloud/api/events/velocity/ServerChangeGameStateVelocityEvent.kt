@@ -4,7 +4,7 @@ import xyz.luccboy.noobcloud.api.server.GameState
 import com.google.common.base.MoreObjects
 
 /**
- * The Event called when the gamestate of a server was changed
+ * The Event called when the gamestate of a server was changed <br>
  * This event is for Velocity plugins
  * @param gameState The updated [GameState]
  */

@@ -4,7 +4,7 @@ import com.google.common.base.MoreObjects
 import net.minestom.server.event.Event
 
 /**
- * The Event called when the server receives a message
+ * The Event called when the server receives a message <br>
  * This event is for Minestom extensions
  * @param message The message
  */

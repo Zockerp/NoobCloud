@@ -12,7 +12,6 @@ import xyz.luccboy.noobcloud.library.network.packets.proxy.ProxyServerStoppedPac
 import xyz.luccboy.noobcloud.library.network.packets.server.CopyServerTemplatePacket
 import xyz.luccboy.noobcloud.library.network.packets.server.RequestServerStartPacket
 import xyz.luccboy.noobcloud.library.network.packets.server.RequestServerStopPacket
-import xyz.luccboy.noobcloud.library.network.packets.server.ServerStopPacket
 import xyz.luccboy.noobcloud.library.network.protocol.Packet
 import xyz.luccboy.noobcloud.server.GameProcess
 import xyz.luccboy.noobcloud.server.GameState
@@ -61,11 +60,6 @@ class NetworkHandler : SimpleChannelInboundHandler<Packet>() {
             is ProxyServerStoppedPacket -> {
                 val proxyServerStoppedPacket: ProxyServerStoppedPacket = packet
                 NoobCloud.instance.processManager.stopServer(proxyServerStoppedPacket.name)
-
-                NoobCloud.instance.nettyServer.proxyChannels.remove(ctx.channel())
-                NoobCloud.instance.nettyServer.channelsByUUID.remove(proxyServerStoppedPacket.uuid)
-                NoobCloud.instance.processManager.servers.remove(proxyServerStoppedPacket.uuid)
-                NoobCloud.instance.nettyServer.sendToAllClients(ServerRemovePacket(proxyServerStoppedPacket.name, proxyServerStoppedPacket.uuid))
             }
 
             is GameServerStartedPacket -> {
@@ -94,11 +88,6 @@ class NetworkHandler : SimpleChannelInboundHandler<Packet>() {
             is GameServerStoppedPacket -> {
                 val gameServerStoppedPacket: GameServerStoppedPacket = packet
                 NoobCloud.instance.processManager.stopServer(gameServerStoppedPacket.name)
-
-                NoobCloud.instance.nettyServer.gameChannels.remove(ctx.channel())
-                NoobCloud.instance.nettyServer.channelsByUUID.remove(gameServerStoppedPacket.uuid)
-                NoobCloud.instance.processManager.servers.remove(gameServerStoppedPacket.uuid)
-                NoobCloud.instance.nettyServer.sendToAllClients(ServerRemovePacket(gameServerStoppedPacket.name, gameServerStoppedPacket.uuid))
             }
 
             // API - Messages
@@ -149,8 +138,9 @@ class NetworkHandler : SimpleChannelInboundHandler<Packet>() {
             }
             is RequestServerStopPacket -> {
                 val requestServerStopPacket: RequestServerStopPacket = packet
-                NoobCloud.instance.nettyServer.channelsByUUID[requestServerStopPacket.uuid]?.writeAndFlush(ServerStopPacket(requestServerStopPacket.name, requestServerStopPacket.uuid))
+                NoobCloud.instance.processManager.stopServer(requestServerStopPacket.name)
                 NoobCloud.instance.nettyServer.sendToAllClients(ServerRemovePacket(requestServerStopPacket.name, requestServerStopPacket.uuid))
+                NoobCloud.instance.logger.info("The server ${requestServerStopPacket.name} is stopped.")
             }
             is SetGameStatePacket -> {
                 val setGameStatePacket: SetGameStatePacket = packet

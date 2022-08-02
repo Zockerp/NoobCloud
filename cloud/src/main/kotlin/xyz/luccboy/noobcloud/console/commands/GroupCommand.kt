@@ -4,7 +4,6 @@ import xyz.luccboy.noobcloud.NoobCloud
 import xyz.luccboy.noobcloud.config.GameData
 import xyz.luccboy.noobcloud.config.ProxyData
 import xyz.luccboy.noobcloud.console.Command
-import xyz.luccboy.noobcloud.library.network.packets.server.ServerStopPacket
 import xyz.luccboy.noobcloud.template.GroupType
 
 class GroupCommand : Command {
@@ -65,7 +64,7 @@ class GroupCommand : Command {
                 val proxyData: ProxyData? = NoobCloud.instance.cloudConfig.proxyGroupsConfigData.proxies.find { it.name.equals(displayName, true) }
                 if (proxyData != null) {
                     NoobCloud.instance.processManager.getProxies().filter { it.proxyData == proxyData }.forEach {
-                        NoobCloud.instance.nettyServer.channelsByUUID[it.uuid]?.writeAndFlush(ServerStopPacket(it.name, it.uuid))
+                        NoobCloud.instance.processManager.stopServer(it.name)
                     }
                     NoobCloud.instance.cloudConfig.removeProxyGroup(proxyData)
 
@@ -74,7 +73,7 @@ class GroupCommand : Command {
                     val gameData: GameData? = NoobCloud.instance.cloudConfig.gameGroupsConfigData.games.find { it.name.equals(displayName, true) }
                     if (gameData != null) {
                         NoobCloud.instance.processManager.getGames().filter { it.gameData == gameData }.forEach {
-                            NoobCloud.instance.nettyServer.channelsByUUID[it.uuid]?.writeAndFlush(ServerStopPacket(it.name, it.uuid))
+                            NoobCloud.instance.processManager.stopServer(it.name)
                         }
                         NoobCloud.instance.cloudConfig.removeGameGroup(gameData)
 

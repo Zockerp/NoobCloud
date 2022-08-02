@@ -2,8 +2,6 @@ package xyz.luccboy.noobcloud.console.commands
 
 import xyz.luccboy.noobcloud.NoobCloud
 import xyz.luccboy.noobcloud.console.Command
-import xyz.luccboy.noobcloud.library.network.packets.server.ServerStopPacket
-import xyz.luccboy.noobcloud.server.ServerProcess
 
 class ServerCommand : Command {
     override val name: String = "server"
@@ -31,8 +29,7 @@ class ServerCommand : Command {
                         return
                     }
 
-                    val serverProcess: ServerProcess = NoobCloud.instance.processManager.getServerProcess(args[1])
-                    NoobCloud.instance.nettyServer.channelsByUUID[serverProcess.uuid]?.writeAndFlush(ServerStopPacket(serverProcess.name, serverProcess.uuid))
+                    NoobCloud.instance.processManager.stopServer(args[1])
                     NoobCloud.instance.logger.info("The server ${args[1]} was stopped.")
                 } catch (indexOutOfBoundsException: IndexOutOfBoundsException) {
                     NoobCloud.instance.logger.error("This server does not exist!")
