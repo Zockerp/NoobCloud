@@ -24,7 +24,7 @@ class ConsoleReader {
                 val input: String = lineReader.readLine("> ")
                 if (input.trim().isNotEmpty()) {
                     val executed: Boolean = NoobCloud.instance.commandHandler.handleInput(input.split(" ").toTypedArray())
-                    if (!executed) NoobCloud.instance.logger.error("Unknown command, please use \"help\"!")
+                    if (!executed) NoobCloud.instance.logger.error("Unknown command, use \"help\" for help!")
                 }
             } catch (exception: UserInterruptException) {
                 NoobCloud.instance.logger.info("NoobCloud will be stopped.")

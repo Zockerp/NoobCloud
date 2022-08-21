@@ -125,7 +125,7 @@ class NetworkHandler(private val groupType: GroupType, private val nettyClient: 
                     serverUUID = playerAddPacket.serverUUID,
                     noobCloudAPI = noobCloudAPI
                 )
-                if (groupType == GroupType.PROXY) NoobCloudVelocityPlugin.instance.noobCloudAPI.addPlayer(player) else NoobCloudMinestomPlugin.instance.noobCloudAPI.addPlayer(player)
+                noobCloudAPI.addPlayer(player)
             }
             is PlayerRemovePacket -> {
                 val playerRemovePacket: PlayerRemovePacket = packet

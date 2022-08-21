@@ -6,6 +6,7 @@ repositories {
     maven("https://jitpack.io")
     maven("https://repo.papermc.io/repository/maven-public/")
 }
+
 dependencies {
     // Kotlin - coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

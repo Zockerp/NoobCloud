@@ -12,13 +12,13 @@ interface CloudPlayer {
     /**
      * The username of the player
      */
-    @get:JvmName("username")
+    @get:JvmName("getUsername")
     val username: String
 
     /**
      * The uuid of the player
      */
-    @get:JvmName("uuid")
+    @get:JvmName("getUUID")
     val uuid: UUID
 
     /**

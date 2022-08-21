@@ -14,8 +14,6 @@ import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent
 import com.velocitypowered.api.event.player.ServerPostConnectEvent
 import com.velocitypowered.api.proxy.Player
 import com.velocitypowered.api.proxy.server.RegisteredServer
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import net.kyori.adventure.text.Component
 import java.util.*
 
@@ -25,12 +23,12 @@ class PlayerListener {
     @Subscribe(order = PostOrder.FIRST)
     fun onChoose(event: PlayerChooseInitialServerEvent) {
         val player: Player = event.player
-        val freeLobby: Optional<RegisteredServer> = getFreeLobby(player.currentServer.map { it.serverInfo.name }.orElse(""))
+        val freeLobby: Optional<RegisteredServer> = NoobCloudVelocityPlugin.instance.getFreeLobby(player.currentServer.map { it.serverInfo.name }.orElse(""))
 
         freeLobby.ifPresentOrElse({ server ->
             event.setInitialServer(server)
         }, {
-            player.disconnect(Component.text("§cNo suitable server could be found!"))
+            player.disconnect(Component.text(NoobCloudVelocityPlugin.instance.prefix + "§cNo suitable server could be found!"))
         })
     }
 
@@ -59,31 +57,13 @@ class PlayerListener {
     fun onServerKick(event: KickedFromServerEvent) {
         val player: Player = event.player
 
-        val freeLobby: Optional<RegisteredServer> = getFreeLobby(player.currentServer.map { it.serverInfo.name }.orElse(""))
+        val freeLobby: Optional<RegisteredServer> = NoobCloudVelocityPlugin.instance.getFreeLobby(player.currentServer.map { it.serverInfo.name }.orElse(""))
         freeLobby.ifPresentOrElse({ server ->
             if (player.currentServer.isPresent) event.result = RedirectPlayer.create(server)
         }, {
-            player.disconnect(Component.text("§cCould not connect to a default or fallback server."))
+            player.disconnect(Component.text(NoobCloudVelocityPlugin.instance.prefix + "§cCould not connect to a default or fallback server."))
             NoobCloudVelocityPlugin.instance.nettyClient.sendPacket(PlayerQuitProxyPacket(NoobCloudVelocityPlugin.instance.uuid, NoobCloudVelocityPlugin.instance.group))
         })
-    }
-
-    private fun getFreeLobby(currentServer: String): Optional<RegisteredServer> = runBlocking(Dispatchers.IO) {
-        var maxPlayers = 0
-        NoobCloudVelocityPlugin.instance.lobbyServers.forEach { serverInfo ->
-            if (serverInfo.name != currentServer) {
-                val onlinePlayers: Int = NoobCloudVelocityPlugin.instance.server.getServer(serverInfo.name).get().playersConnected.size
-                if (onlinePlayers > maxPlayers) maxPlayers = onlinePlayers
-            }
-        }
-        NoobCloudVelocityPlugin.instance.lobbyServers.forEach { serverInfo ->
-            if (serverInfo.name != currentServer) {
-                val server: RegisteredServer = NoobCloudVelocityPlugin.instance.server.getServer(serverInfo.name).get()
-                if (server.playersConnected.size <= maxPlayers) return@runBlocking Optional.of(server)
-            }
-        }
-
-        return@runBlocking Optional.empty()
     }
 
 }

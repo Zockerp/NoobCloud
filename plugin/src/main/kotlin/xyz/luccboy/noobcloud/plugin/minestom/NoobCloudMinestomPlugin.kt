@@ -38,7 +38,7 @@ class NoobCloudMinestomPlugin : Extension() {
                 "|  _    ||  |_|  ||  |_|  ||  _   | |      _||   |___ |  |_|  ||       || |_|   |\n" +
                 "| | |   ||       ||       || |_|   ||     |_ |       ||       ||       ||       |\n" +
                 "|_|  |__||_______||_______||_______||_______||_______||_______||_______||______| \n" +
-                "by Luccboy"
+                "by Luccboy\n"
         )
 
         databaseManager = DatabaseManager(databaseEnabled, databaseHost, databaseUser, databasePassword, databaseName, databasePort).connect()

@@ -1,1 +1,1 @@
-screen -dm -S NoobCloud java -jar NoobCloud-1.0-SNAPSHOT.jar
+screen -dm -S NoobCloud java -Xmx256M -jar NoobCloud-1.0-SNAPSHOT.jar

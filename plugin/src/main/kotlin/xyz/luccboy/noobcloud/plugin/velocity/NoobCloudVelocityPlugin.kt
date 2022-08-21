@@ -17,9 +17,13 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent
 import com.velocitypowered.api.plugin.Plugin
 import com.velocitypowered.api.proxy.ProxyServer
+import com.velocitypowered.api.proxy.server.RegisteredServer
 import com.velocitypowered.api.proxy.server.ServerInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
-import java.util.UUID
+import xyz.luccboy.noobcloud.plugin.velocity.commands.HubCommand
+import java.util.*
 
 @Plugin(id = "noobcloud", name = "NoobCloud", version = "1.0-SNAPSHOT", description = "NoobCloud-Plugin", authors = ["Luccboy"])
 class NoobCloudVelocityPlugin @Inject constructor(val server: ProxyServer, val logger: Logger) {
@@ -49,7 +53,7 @@ class NoobCloudVelocityPlugin @Inject constructor(val server: ProxyServer, val l
                 "|  _    ||  |_|  ||  |_|  ||  _   | |      _||   |___ |  |_|  ||       || |_|   |\n" +
                 "| | |   ||       ||       || |_|   ||     |_ |       ||       ||       ||       |\n" +
                 "|_|  |__||_______||_______||_______||_______||_______||_______||_______||______| \n" +
-                "by Luccboy"
+                "by Luccboy\n"
         )
 
         databaseManager = DatabaseManager(databaseEnabled, databaseHost, databaseUser, databasePassword, databaseName, databasePort).connect()
@@ -61,6 +65,7 @@ class NoobCloudVelocityPlugin @Inject constructor(val server: ProxyServer, val l
 
         val commandManager: CommandManager = server.commandManager
         commandManager.register(commandManager.metaBuilder("noobcloud").aliases("cloud").build(), CloudCommand())
+        commandManager.register(commandManager.metaBuilder("hub").aliases("lobby", "l").build(), HubCommand())
         server.eventManager.register(this, PlayerListener())
         server.eventManager.register(this, PingListener())
     }
@@ -87,4 +92,21 @@ class NoobCloudVelocityPlugin @Inject constructor(val server: ProxyServer, val l
     private val databaseUser: String = System.getProperty("databaseUser")
     private val databasePassword: String = System.getProperty("databasePassword")
 
+    fun getFreeLobby(currentServer: String): Optional<RegisteredServer> = runBlocking(Dispatchers.IO) {
+        var maxPlayers = 0
+        lobbyServers.forEach { serverInfo ->
+            if (serverInfo.name != currentServer) {
+                val onlinePlayers: Int = server.getServer(serverInfo.name).get().playersConnected.size
+                if (onlinePlayers > maxPlayers) maxPlayers = onlinePlayers
+            }
+        }
+        lobbyServers.forEach { serverInfo ->
+            if (serverInfo.name != currentServer) {
+                val server: RegisteredServer = server.getServer(serverInfo.name).get()
+                if (server.playersConnected.size <= maxPlayers) return@runBlocking Optional.of(server)
+            }
+        }
+
+        return@runBlocking Optional.empty()
+    }
 }

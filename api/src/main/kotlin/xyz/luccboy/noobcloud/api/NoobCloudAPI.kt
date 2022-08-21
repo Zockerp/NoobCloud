@@ -13,6 +13,7 @@ import java.util.UUID
 abstract class NoobCloudAPI {
 
     companion object {
+        @get:JvmName("getInstance")
         @JvmStatic lateinit var instance: NoobCloudAPI
             private set
     }

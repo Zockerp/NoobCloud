@@ -1,1 +1,1 @@
-java -jar NoobCloud-1.0-SNAPSHOT.jar
+java -Xmx256M -jar NoobCloud-1.0-SNAPSHOT.jar

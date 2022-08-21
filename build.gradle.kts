@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm") version "1.7.10"
     id("com.github.johnrengelman.shadow") version "7.1.2"
@@ -22,12 +20,9 @@ allprojects {
         implementation(kotlin("stdlib"))
     }
 
-    java {
-        sourceCompatibility = JavaVersion.VERSION_18
-        targetCompatibility = JavaVersion.VERSION_18
-    }
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "18"
+    kotlin {
+        jvmToolchain {
+            languageVersion.set(JavaLanguageVersion.of(18))
+        }
     }
 }

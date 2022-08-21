@@ -71,8 +71,7 @@ class NoobCloudConfig {
         val file = File("$path/$resourceName")
         if (!file.exists()) {
             val inputStream: InputStream? = this.javaClass.classLoader.getResourceAsStream(resourceName)
-            val parentFile: File = file.parentFile
-            if (!parentFile.exists()) parentFile.mkdirs()
+            file.parentFile.also { if (!it.exists()) it.mkdirs() }
             if (inputStream != null) {
                 Files.copy(inputStream, file.toPath())
             } else {
