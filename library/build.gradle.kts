@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     // Netty - communication
-    implementation("io.netty:netty-all:4.1.79.Final")
+    implementation("io.netty:netty-all:4.1.82.Final")
     // Guava
     implementation("com.google.guava:guava:31.1-jre")
 }

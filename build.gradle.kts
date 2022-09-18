@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "1.7.10"
+    id("maven-publish")
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
@@ -10,6 +11,7 @@ allprojects {
     apply {
         plugin("org.jetbrains.kotlin.jvm")
         plugin("com.github.johnrengelman.shadow")
+        plugin("maven-publish")
     }
 
     repositories {
@@ -23,6 +25,14 @@ allprojects {
     kotlin {
         jvmToolchain {
             languageVersion.set(JavaLanguageVersion.of(18))
+        }
+    }
+
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                from(components["java"])
+            }
         }
     }
 }

@@ -14,11 +14,11 @@ dependencies {
     implementation(project(":library"))
     implementation(project(":api"))
     // Minestom and Velocity
-    compileOnly("com.github.Minestom:Minestom:89a09f326e")
+    compileOnly("com.github.Minestom:Minestom:18c46481f4")
     compileOnly("com.velocitypowered:velocity-api:3.1.2-SNAPSHOT")
     kapt("com.velocitypowered:velocity-api:3.1.2-SNAPSHOT")
     // Netty - communication
-    implementation("io.netty:netty-all:4.1.79.Final")
+    implementation("io.netty:netty-all:4.1.82.Final")
     // Database
     implementation("com.github.Heliumdioxid.database-api:mysql:v1.0.0-rc1")
     implementation("mysql:mysql-connector-java:8.0.30")

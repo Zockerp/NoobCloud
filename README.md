@@ -14,8 +14,8 @@ much more features than small teams need.
 - [Velocity](https://github.com/Minestom/Minestom)-Support
 
 ## Documentation
-The wiki for all features of NoobCloud and its API is available [here](https://noobcloud.luccboy.tk).
-You can also find the KDocs/JavaDocs [here](https://docs.luccboy.tk/noobcloud).
+The wiki for all features of NoobCloud and its API is available [here](https://noobcloudsystems.github.io).
+You can also find the KDocs/JavaDocs [here](https://noobcloudsystems.github.io/docs/noobcloud).
 
 ## Contributing
 First of all, thank you for considering participating in this project. Thus, I am very open to any form of constructive 

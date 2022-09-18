@@ -51,7 +51,7 @@ class GroupCommand : Command {
                         }
 
                         NoobCloud.instance.logger.info("The group $displayName (${groupType.toString().lowercase().replaceFirstChar(Char::titlecase)}) was successfully created!")
-                        NoobCloud.instance.logger.info("Edit the related config file to change values like RAM and min-amount. If you need help, read the documentation (docs.luccboy.tk).")
+                        NoobCloud.instance.logger.info("Edit the related config file to change values like RAM and min-amount. If you need help, read the documentation.")
                     } catch (exception: IllegalArgumentException) {
                         sendHelp()
                     }
