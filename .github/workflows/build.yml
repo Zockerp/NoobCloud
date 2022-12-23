@@ -20,8 +20,8 @@ jobs:
       - name: Prepare upload
         run: |
           cp scripts/* .
-          cp cloud/build/libs/*.jar .
-          mkdir libraries && cp plugin/build/libs/*.jar libraries/
+          cp cloud/build/libs/NoobCloud-1.0-SNAPSHOT.jar .
+          mkdir libraries && cp plugin/build/libs/NoobCloudPlugin.jar libraries/
       - name: Upload NoobCloud
         uses: actions/upload-artifact@v3
         with:
