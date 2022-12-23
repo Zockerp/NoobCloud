@@ -1,5 +1,7 @@
 package xyz.luccboy.noobcloud.console.commands
 
+import org.jline.builtins.Completers.TreeCompleter.Node
+import org.jline.builtins.Completers.TreeCompleter.node
 import xyz.luccboy.noobcloud.NoobCloud
 import xyz.luccboy.noobcloud.console.Command
 
@@ -7,6 +9,7 @@ class ServerCommand : Command {
     override val name: String = "server"
     override val description: String = "Starts or stops a server"
     override val aliases: Array<String> = arrayOf("server")
+    override val completer: Node = node(name, *aliases, node("start", node("<group>")), node("stop", node("<display-id>")))
 
     override fun execute(args: Array<String>) {
         if (args.size == 2) {

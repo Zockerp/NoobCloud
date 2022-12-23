@@ -23,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import xyz.luccboy.noobcloud.plugin.velocity.commands.HubCommand
+import xyz.luccboy.noobcloud.plugin.shared.config.Config
 import java.util.*
 
 @Plugin(id = "noobcloud", name = "NoobCloud", version = "1.0-SNAPSHOT", description = "NoobCloud-Plugin", authors = ["Luccboy"])
@@ -36,6 +37,8 @@ class NoobCloudVelocityPlugin @Inject constructor(val server: ProxyServer, val l
     init {
         instance = this
     }
+
+    val config: Config = Config(GroupType.PROXY)
 
     lateinit var databaseManager: DatabaseManager
     lateinit var noobCloudAPI: AbstractNoobCloudAPI
@@ -55,6 +58,8 @@ class NoobCloudVelocityPlugin @Inject constructor(val server: ProxyServer, val l
                 "|_|  |__||_______||_______||_______||_______||_______||_______||_______||______| \n" +
                 "by Luccboy\n"
         )
+
+        config.loadConfig()
 
         databaseManager = DatabaseManager(databaseEnabled, databaseHost, databaseUser, databasePassword, databaseName, databasePort).connect()
         nettyClient = NettyClient(GroupType.PROXY)
@@ -77,7 +82,6 @@ class NoobCloudVelocityPlugin @Inject constructor(val server: ProxyServer, val l
         nettyClient.shutdown()
     }
 
-    val prefix: String = System.getProperty("prefix")
     val name: String = System.getProperty("name")
     val group: String = System.getProperty("group")
     val uuid: UUID = UUID.fromString(System.getProperty("uuid"))

@@ -37,7 +37,7 @@ class TemplateManager {
 
     fun copyProxyTemplate(id: Int, port: Int, proxyData: ProxyData): Boolean {
         val templateDirectory = File("${GroupType.PROXY.templatePath}/${proxyData.name}")
-        val tempDirectory = File(GroupType.PROXY.tempPath + "/${proxyData.name}/${proxyData.name}-$id").also {
+        val workDirectory = File((if (!proxyData.static) GroupType.PROXY.tempPath else GroupType.PROXY.staticPath) + "/${proxyData.name}/${proxyData.name}-$id").also {
             if (it.exists()) it.deleteRecursively()
             it.mkdirs()
         }
@@ -46,12 +46,12 @@ class TemplateManager {
             NoobCloud.instance.logger.error("No velocity.jar found! Please add it in the libraries folder!")
             return false
         }
-        File("libraries/velocity.jar").copyTo(File("${tempDirectory.path}/velocity.jar"), true)
+        File("libraries/velocity.jar").copyTo(File("${workDirectory.path}/velocity.jar"), true)
 
-        templateDirectory.copyRecursively(tempDirectory, true)
+        templateDirectory.copyRecursively(workDirectory, true)
 
-        val configFile = File("${tempDirectory.path}/velocity.toml")
-        if (!configFile.exists()) NoobCloud.instance.cloudConfig.exportResource("velocity.toml", tempDirectory.path, false)
+        val configFile = File("${workDirectory.path}/velocity.toml")
+        if (!configFile.exists()) NoobCloud.instance.cloudConfig.exportResource("velocity.toml", workDirectory.path, false)
         val entries: MutableMap<String, Any> = mapper.readValue(configFile, object : TypeReference<MutableMap<String, Any>>() {})
         entries["bind"] = NoobCloud.instance.cloudConfig.noobCloudConfigData.config.address + ":$port"
         mapper.writeValue(configFile, entries)
@@ -60,14 +60,20 @@ class TemplateManager {
             NoobCloud.instance.logger.error("No NoobCloudPlugin.jar found! Please add it in the libraries folder!")
             return false
         }
-        File("libraries/NoobCloudPlugin.jar").copyTo(File("${tempDirectory.path}/plugins/NoobCloudPlugin.jar"), true)
+        File("libraries/NoobCloudPlugin.jar").copyTo(File("${workDirectory.path}/plugins/NoobCloudPlugin.jar"), true)
+
+        if (!File("configs/messages.yml").exists()) {
+            NoobCloud.instance.logger.error("No messages.yml found! Please restart NoobCloud!")
+            return false
+        }
+        File("configs/messages.yml").copyTo(File("${workDirectory.path}/plugins/NoobCloud/messages.yml"), true)
 
         return true
     }
 
     fun copyGameTemplate(id: Int, gameData: GameData): Boolean {
         val templateDirectory = File("${GroupType.GAME.templatePath}/${gameData.name}")
-        val tempDirectory = File(GroupType.GAME.tempPath + "/${gameData.name}/${gameData.name}-$id").also {
+        val workDirectory = File((if (!gameData.static) GroupType.GAME.tempPath else GroupType.GAME.staticPath) + "/${gameData.name}/${gameData.name}-$id").also {
             if (it.exists()) it.deleteRecursively()
             it.mkdirs()
         }
@@ -76,23 +82,29 @@ class TemplateManager {
             NoobCloud.instance.logger.error("No minestom.jar found! Please add it in the libraries folder!")
             return false
         }
-        File("libraries/minestom.jar").copyTo(File("${tempDirectory.path}/minestom.jar"), true)
+        File("libraries/minestom.jar").copyTo(File("${workDirectory.path}/minestom.jar"), true)
 
-        templateDirectory.copyRecursively(tempDirectory, true)
+        templateDirectory.copyRecursively(workDirectory, true)
 
         if (!File("libraries/NoobCloudPlugin.jar").exists()) {
             NoobCloud.instance.logger.error("No NoobCloudPlugin.jar found! Please add it in the libraries folder!")
             return false
         }
-        File("libraries/NoobCloudPlugin.jar").copyTo(File("${tempDirectory.path}/extensions/NoobCloudPlugin.jar"), true)
+        File("libraries/NoobCloudPlugin.jar").copyTo(File("${workDirectory.path}/extensions/NoobCloudPlugin.jar"), true)
+
+        if (!File("configs/messages.yml").exists()) {
+            NoobCloud.instance.logger.error("No messages.yml found! Please restart NoobCloud!")
+            return false
+        }
+        File("configs/messages.yml").copyTo(File("${workDirectory.path}/extensions/NoobCloud/messages.yml"), true)
 
         return true
     }
 
-    fun saveServerTemplate(groupName: String, groupType: GroupType, serverName: String) {
+    fun saveServerTemplate(groupName: String, groupType: GroupType, serverName: String, static: Boolean) {
         val templateDirectory = File("${groupType.templatePath}/$groupName")
-        val tempDirectory = File(groupType.tempPath + "/${groupName}/${serverName}")
-        tempDirectory.copyRecursively(templateDirectory, true)
+        val workDirectory = File((if (!static) groupType.tempPath else groupType.staticPath) + "/${groupName}/${serverName}")
+        workDirectory.copyRecursively(templateDirectory, true)
     }
 
 }

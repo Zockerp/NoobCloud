@@ -1,17 +1,19 @@
 {
-  "entrypoint": "xyz.luccboy.noobcloud.plugin.minestom.NoobCloudMinestomPlugin",
-  "name": "NoobCloud",
-  "version": "1.0-SNAPSHOT",
-  "externalDependencies": {
-    "repositories": [
-      {"name": "Central", "url": "https://repo1.maven.org/maven2/"},
-      {"name": "jitpack", "url": "https://jitpack.io"}
-    ],
-    "artifacts": [
-      "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4",
-      "io.netty:netty-all:4.1.79.Final",
-      "com.github.Heliumdioxid.database-api:mysql:v1.0.0-rc1",
-      "mysql:mysql-connector-java:8.0.30"
-    ]
-  }
+    "entrypoint": "xyz.luccboy.noobcloud.plugin.minestom.NoobCloudMinestomPlugin",
+    "name": "NoobCloud",
+    "version": "1.0-SNAPSHOT",
+    "externalDependencies": {
+        "repositories": [
+            {"name": "Central", "url": "https://repo1.maven.org/maven2/"},
+            {"name": "jitpack", "url": "https://jitpack.io"}
+        ],
+        "artifacts": [
+            "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4",
+            "io.netty:netty-all:4.1.86.Final",
+            "com.github.Heliumdioxid.database-api:mysql:v1.0.0-rc1",
+            "mysql:mysql-connector-java:8.0.31",
+            "com.fasterxml.jackson.module:jackson-module-kotlin:2.14.1",
+            "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.14.1"
+        ]
+    }
 }

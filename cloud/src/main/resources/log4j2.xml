@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="info">
+<Configuration>
     <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout disableAnsi="false" pattern="%highlight{[%d{HH:mm:ss} %level]: %msg%n}{FATAL=red, ERROR=red, WARN=yellow, INFO=white, DEBUG=green, TRACE=blue}"/>
-        </Console>
+        <TerminalConsole name="Console">
+            <PatternLayout pattern="%highlightError{[%d{HH:mm:ss} %level]: %msg%n}"/>
+        </TerminalConsole>
         <RollingRandomAccessFile name="File" fileName="logs/latest.log" filePattern="logs/%d{yyyy-MM-dd}-%i.log">
             <PatternLayout pattern="[%d{dd.MM.yyyy HH:mm:ss}] [%level]: %msg%n" />
             <Policies>

@@ -1,0 +1,61 @@
+# This config file controls the INGAME messages
+# Please use § inestead of &
+# Do not remove the placeholders, e.g. {0} or {1}
+
+# The prefix is placed before all messages
+prefix: '§bNoobCloud §8| §7'
+
+# Messages for cloud command
+commandOnlyForPlayers: '§cThis command is only for players!'
+
+# /cloud listGroups
+# With default values, the message will look like this:
+#
+# §7Proxy-groups§8:
+#    ┠ §bproxy§8(§7Proxy§8): §7players§8: §b5
+#    ┗ §bbungee§8(§7Proxy§8): §7players§8: §b5
+# $7Game-groups§8:
+#    ┗ §blobby§8(§7Game§8): §7players§8: §b5
+#
+listGroupsProxyHeading: 'Proxy-groups§8:'
+listGroupsGameHeading: 'Game-groups§8:'
+listGroupsPrefix: '   §8┠ '
+listGroupsPrefixLast: '   §8┗ '
+listGroupsMessage: '§b{0}§8(§7{1}§8): §7players§8: §b{2}'
+
+# /cloud listServers
+# With default values, the message will look like this:
+#
+# §7Proxies§8:
+#    ┠ §bproxy-1§8(§7proxy§8): §7players§8: §b5
+#    ┗ §bproxy-2§8(§7proxy§8): §7players§8: §b5
+# $7Games§8:
+#    ┗ §blobby-1§8(§7lobby§8): §7players§8: §b5
+#
+listServersProxyHeading: 'Proxies§8:'
+listServersGameHeading: 'Games§8:'
+listServersPrefix: '   §8┠ '
+listServersPrefixLast: '   §8┗ '
+listServersMessage: '§b{0}§8(§7{1}§8): §7players§8: §b{2}'
+
+# /cloud start
+serverWillBeStarted: 'A server of group §b{0} §7will be started§8.'
+serverStarted: 'The server §b{0} §7is started§8!'
+groupNotFound: '§cThere is no group with this name!'
+
+# /cloud stop
+serverWillBeStopped: 'The server §b{0} §7is started§8!'
+serverStopped: 'The server §b{0} §7is stopped§8!'
+serverNotFound: '§cThere is no server with this name!'
+
+# /cloud copy
+templateWillBeSaved: '§b{0} §7will be saved as template for group §b{1}§8.'
+
+# Messages for /hub command
+alreadyConnectedToLobby: '§cYou are already connected to a lobby server!'
+noLobbyFound: '§cNo suitable lobby server could be found!'
+
+# Motd-Settings
+# {0} will be replaced with the server name
+proxyMotd: '§7NoobCloud Proxy§8: §b{0}'
+gameMotd: '§7NoobCloud Game-Server§8: §b{0}'

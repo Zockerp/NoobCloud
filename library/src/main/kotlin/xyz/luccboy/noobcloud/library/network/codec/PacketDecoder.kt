@@ -17,7 +17,7 @@ class PacketDecoder(private val packetRegistry: PacketRegistry) : ByteToMessageD
         }
 
         val packetId: Int = input.readInt()
-        if (!packetRegistry.containsPacketId(packetId)) throw DecoderException("Ungültige Packet-ID: $packetId")
+        if (!packetRegistry.containsPacketId(packetId)) throw DecoderException("Invalid packet id: $packetId")
 
         val packetClass: KClass<out Packet> = packetRegistry.getPacketClassById(packetId)
         val packet: Packet = packetClass.java.getDeclaredConstructor().newInstance()

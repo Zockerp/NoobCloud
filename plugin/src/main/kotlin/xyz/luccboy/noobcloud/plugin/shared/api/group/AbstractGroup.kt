@@ -8,7 +8,8 @@ import xyz.luccboy.noobcloud.api.server.Server
 data class AbstractGroup(
     override val groupType: GroupType,
     override val name: String,
-    override val lobby: Boolean
+    override val lobby: Boolean,
+    override val static: Boolean
 ) : Group {
     override fun getServers(): List<Server> = NoobCloudAPI.instance.getAllServers().filter { it.groupName == name }
 }

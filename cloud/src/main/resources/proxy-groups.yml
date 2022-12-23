@@ -4,3 +4,4 @@ proxies:
     minAmount: 1
     maxAmount: 1
     startPlayerCount: -1
+    static: false

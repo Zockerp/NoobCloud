@@ -16,6 +16,7 @@ data class AbstractServer(
     override val groupName: String,
     override val groupType: GroupType,
     override val port: Int,
+    override val static: Boolean,
     var serverGameState: GameState,
     var playerOnlineCount: Int,
     var currentMotd: String

@@ -1,5 +1,7 @@
 package xyz.luccboy.noobcloud.console.commands
 
+import org.jline.builtins.Completers.TreeCompleter.Node
+import org.jline.builtins.Completers.TreeCompleter.node
 import xyz.luccboy.noobcloud.NoobCloud
 import xyz.luccboy.noobcloud.config.GameData
 import xyz.luccboy.noobcloud.config.ProxyData
@@ -9,6 +11,7 @@ class RestartCommand : Command {
     override val name: String = "restart"
     override val description: String = "Restarts a whole group"
     override val aliases: Array<String> = arrayOf("restart")
+    override val completer: Node = node(name, *aliases, node("<group>"))
 
     override fun execute(args: Array<String>) {
         if (args.size == 1) {

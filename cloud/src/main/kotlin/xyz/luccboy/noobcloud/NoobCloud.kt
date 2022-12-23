@@ -2,8 +2,6 @@ package xyz.luccboy.noobcloud
 
 import xyz.luccboy.noobcloud.config.NoobCloudConfig
 import xyz.luccboy.noobcloud.console.CommandHandler
-import xyz.luccboy.noobcloud.console.ConsoleReader
-import xyz.luccboy.noobcloud.console.commands.*
 import xyz.luccboy.noobcloud.network.NettyServer
 import xyz.luccboy.noobcloud.server.ProcessManager
 import xyz.luccboy.noobcloud.template.TemplateManager
@@ -11,6 +9,7 @@ import kotlinx.coroutines.*
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.apache.logging.log4j.message.ParameterizedMessageFactory
+import xyz.luccboy.noobcloud.console.NoobCloudConsole
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -25,8 +24,7 @@ class NoobCloud {
         instance = this
     }
 
-    val prefix: String = "§bNoobCloud §8| §7"
-    var stopping: Boolean = false
+    var running: Boolean = true
 
     val logger: Logger = LogManager.getLogger(NoobCloud::class.java.simpleName, ParameterizedMessageFactory())
     val commandHandler: CommandHandler = CommandHandler()
@@ -34,7 +32,7 @@ class NoobCloud {
     val templateManager: TemplateManager = TemplateManager()
     lateinit var processManager: ProcessManager
         private set
-    val consoleReader: ConsoleReader = ConsoleReader()
+    val console: NoobCloudConsole = NoobCloudConsole()
     lateinit var nettyServer: NettyServer
 
     suspend fun launch() = coroutineScope {
@@ -56,20 +54,12 @@ class NoobCloud {
 
         nettyServer = NettyServer()
 
-        registerCommands()
-        launch(Dispatchers.IO) { consoleReader.start() }
-    }
-
-    private fun registerCommands() {
-        commandHandler.registerCommand(StopCommand())
-        commandHandler.registerCommand(GroupCommand())
-        commandHandler.registerCommand(ServerCommand())
-        commandHandler.registerCommand(ScreenCommand())
-        commandHandler.registerCommand(RestartCommand())
+        commandHandler.registerCommands()
+        launch(Dispatchers.IO) { console.start() }
     }
 
     fun stop() {
-        stopping = true
+        running = false
         nettyServer.shutdown()
         processManager.servers.values.forEach { serverProcess -> serverProcess.process.destroyForcibly() }
         File("temp").also { if (it.exists()) it.deleteRecursively() }

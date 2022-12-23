@@ -54,6 +54,7 @@ class NetworkHandler : SimpleChannelInboundHandler<Packet>() {
                     groupName = proxyProcess.proxyData.name,
                     groupType = GroupType.PROXY.name,
                     port = proxyProcess.port,
+                    static = proxyProcess.proxyData.static,
                     gameState = GameState.PROXY.name
                 ))
             }
@@ -82,6 +83,7 @@ class NetworkHandler : SimpleChannelInboundHandler<Packet>() {
                     groupName = gameProcess.gameData.name,
                     groupType = GroupType.GAME.name,
                     port = gameProcess.port,
+                    static = gameProcess.gameData.static,
                     gameState = gameProcess.gameState.name
                 ))
             }
@@ -156,7 +158,7 @@ class NetworkHandler : SimpleChannelInboundHandler<Packet>() {
             }
             is CopyServerTemplatePacket -> {
                 val copyServerTemplatePacket: CopyServerTemplatePacket = packet
-                NoobCloud.instance.templateManager.saveServerTemplate(copyServerTemplatePacket.groupName, GroupType.valueOf(copyServerTemplatePacket.groupType), copyServerTemplatePacket.serverName)
+                NoobCloud.instance.templateManager.saveServerTemplate(copyServerTemplatePacket.groupName, GroupType.valueOf(copyServerTemplatePacket.groupType), copyServerTemplatePacket.serverName, copyServerTemplatePacket.static)
                 NoobCloud.instance.logger.info("Saved ${copyServerTemplatePacket.serverName} as template for group ${copyServerTemplatePacket.groupType}.")
             }
         }
@@ -170,14 +172,16 @@ class NetworkHandler : SimpleChannelInboundHandler<Packet>() {
                     channel.writeAndFlush(GroupAddPacket(
                         name = proxyData.name,
                         groupType = GroupType.PROXY.name,
-                        lobby = false
+                        lobby = false,
+                        static = proxyData.static
                     ))
                 }
                 NoobCloud.instance.cloudConfig.gameGroupsConfigData.games.forEach { gameData ->
                     channel.writeAndFlush(GroupAddPacket(
                         name = gameData.name,
                         groupType = GroupType.GAME.name,
-                        lobby = gameData.lobby
+                        lobby = gameData.lobby,
+                        static = gameData.static
                     ))
                 }
                 // Send servers
@@ -188,6 +192,7 @@ class NetworkHandler : SimpleChannelInboundHandler<Packet>() {
                         groupName = proxyProcess.proxyData.name,
                         groupType = GroupType.PROXY.name,
                         port = proxyProcess.port,
+                        static = proxyProcess.proxyData.static,
                         gameState = GameState.PROXY.name
                     ))
                     channel.writeAndFlush(ServerUpdateOnlineCountPacket(
@@ -202,6 +207,7 @@ class NetworkHandler : SimpleChannelInboundHandler<Packet>() {
                         groupName = gameProcess.gameData.name,
                         groupType = GroupType.GAME.name,
                         port = gameProcess.port,
+                        static = gameProcess.gameData.static,
                         gameState = gameProcess.gameState.name
                     ))
                     channel.writeAndFlush(ServerUpdateOnlineCountPacket(

@@ -9,9 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import java.io.BufferedReader
 import java.io.File
-import java.io.InputStreamReader
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -47,7 +45,6 @@ class ProcessManager {
         val process: Process = ProcessBuilder(
             NoobCloud.instance.cloudConfig.noobCloudConfigData.config.javaPath,
             "-Xmx${proxyData.memory}M",
-            "-Dprefix=" + NoobCloud.instance.prefix,
             "-Dname=" + proxyData.name + "-$id",
             "-Dgroup=" + proxyData.name,
             "-Duuid=$uuid",
@@ -61,7 +58,7 @@ class ProcessManager {
             "-DdatabaseUser=" + NoobCloud.instance.cloudConfig.noobCloudConfigData.playerDatabase.username,
             "-DdatabasePassword=" + NoobCloud.instance.cloudConfig.noobCloudConfigData.playerDatabase.password,
             "-jar", "velocity.jar")
-            .directory(File(GroupType.PROXY.tempPath + "/${proxyData.name}/${proxyData.name}-$id"))
+            .directory(File((if (!proxyData.static) GroupType.PROXY.tempPath else GroupType.PROXY.staticPath) + "/${proxyData.name}/${proxyData.name}-$id"))
             .start()
 
         servers[uuid] = ProxyProcess(id, port, uuid, proxyData, process, 0)
@@ -81,7 +78,6 @@ class ProcessManager {
         val process: Process = ProcessBuilder(
             NoobCloud.instance.cloudConfig.noobCloudConfigData.config.javaPath,
             "-Xmx${gameData.memory}M",
-            "-Dprefix=" + NoobCloud.instance.prefix,
             "-Dname=" + gameData.name + "-$id",
             "-Dgroup=" + gameData.name,
             "-Duuid=$uuid",
@@ -97,7 +93,7 @@ class ProcessManager {
             "-DdatabaseUser=" + NoobCloud.instance.cloudConfig.noobCloudConfigData.playerDatabase.username,
             "-DdatabasePassword=" + NoobCloud.instance.cloudConfig.noobCloudConfigData.playerDatabase.password,
             "-jar", "minestom.jar")
-            .directory(File(GroupType.GAME.tempPath + "/${gameData.name}/${gameData.name}-$id/"))
+            .directory(File((if (!gameData.static) GroupType.GAME.tempPath else GroupType.GAME.staticPath) + "/${gameData.name}/${gameData.name}-$id/"))
             .start()
 
         servers[uuid] = GameProcess(id, port, uuid, gameData, process, 0, GameState.AVAILABLE)
@@ -112,9 +108,9 @@ class ProcessManager {
                     serverProcess.process.waitFor()
                 }
 
-                if (serverProcess is ProxyProcess) {
+                if (serverProcess is ProxyProcess && !serverProcess.proxyData.static) {
                     File(GroupType.PROXY.tempPath + "/${serverProcess.proxyData.name}/${serverProcess.name}").deleteRecursively()
-                } else if (serverProcess is GameProcess) {
+                } else if (serverProcess is GameProcess && !serverProcess.gameData.static) {
                     File(GroupType.GAME.tempPath + "/${serverProcess.gameData.name}/${serverProcess.name}").deleteRecursively()
                 }
 

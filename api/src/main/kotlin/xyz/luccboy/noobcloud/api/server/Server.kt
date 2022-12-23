@@ -39,6 +39,12 @@ interface Server {
     val port: Int
 
     /**
+     * Indicates whether the server is static or not
+     */
+    @get:JvmName("isStatic")
+    val static: Boolean
+
+    /**
      * Sets the game-state of a server
      * @param gameState The new [GameState]
      */

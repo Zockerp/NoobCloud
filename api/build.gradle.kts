@@ -1,7 +1,7 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
-    id("org.jetbrains.dokka") version "1.7.10"
+    id("org.jetbrains.dokka") version "1.7.20"
 }
 
 repositories {
@@ -10,10 +10,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.github.Minestom:Minestom:18c46481f4")
+    compileOnly("com.github.Minestom:Minestom:eb06ba8664")
     compileOnly("com.velocitypowered:velocity-api:3.1.2-SNAPSHOT")
 
-    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.7.10")
+    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.7.20")
 }
 
 tasks.shadowJar {

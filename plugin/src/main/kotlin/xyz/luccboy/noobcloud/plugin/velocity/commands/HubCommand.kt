@@ -6,10 +6,14 @@ import com.velocitypowered.api.command.SimpleCommand.Invocation
 import com.velocitypowered.api.proxy.Player
 import com.velocitypowered.api.proxy.server.RegisteredServer
 import net.kyori.adventure.text.Component
+import xyz.luccboy.noobcloud.plugin.shared.config.Messages
 import xyz.luccboy.noobcloud.plugin.velocity.NoobCloudVelocityPlugin
 import java.util.*
 
 class HubCommand : SimpleCommand {
+
+    private val messages: Messages = NoobCloudVelocityPlugin.instance.config.messages
+    private val prefix: String = messages.prefix
 
     override fun execute(invocation: Invocation) {
         val sender: CommandSource = invocation.source()
@@ -18,7 +22,7 @@ class HubCommand : SimpleCommand {
 
         if (sender.currentServer.isPresent) {
             if (NoobCloudVelocityPlugin.instance.lobbyServers.contains(sender.currentServer.get().serverInfo)) {
-                sender.sendMessage(Component.text(NoobCloudVelocityPlugin.instance.prefix + "§cYou are already connected to a lobby server!"))
+                sender.sendMessage(Component.text(prefix + messages.alreadyConnectedToLobby))
                 return
             }
         }
@@ -28,7 +32,7 @@ class HubCommand : SimpleCommand {
         freeLobby.ifPresentOrElse({ server ->
             sender.createConnectionRequest(server).fireAndForget()
         }, {
-            sender.sendMessage(Component.text(NoobCloudVelocityPlugin.instance.prefix + "§cNo suitable lobby server could be found!"))
+            sender.sendMessage(Component.text(prefix + messages.noLobbyFound))
         })
     }
 

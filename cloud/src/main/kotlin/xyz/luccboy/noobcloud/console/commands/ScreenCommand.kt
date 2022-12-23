@@ -1,5 +1,7 @@
 package xyz.luccboy.noobcloud.console.commands
 
+import org.jline.builtins.Completers.TreeCompleter.Node
+import org.jline.builtins.Completers.TreeCompleter.node
 import xyz.luccboy.noobcloud.NoobCloud
 import xyz.luccboy.noobcloud.console.Command
 import xyz.luccboy.noobcloud.server.ServerProcess
@@ -10,6 +12,7 @@ class ScreenCommand : Command {
     override val name: String = "screen"
     override val description: String = "Shows the console-output of a server"
     override val aliases: Array<String> = arrayOf("screen")
+    override val completer: Node = node(name, *aliases, node("<display-id>", "leave"))
 
     private var outputServer: String = ""
     private var outputThread: Thread? = null
@@ -39,7 +42,7 @@ class ScreenCommand : Command {
                 if (outputThread != null && outputThread!!.isAlive) outputThread?.stop()
                 outputServer = args[0]
                 outputThread = Thread {
-                    while (!NoobCloud.instance.stopping && serverProcess.process.isAlive) {
+                    while (NoobCloud.instance.running && serverProcess.process.isAlive) {
                         val input = BufferedReader(InputStreamReader(serverProcess.process.inputStream))
                         var line: String? = input.readLine()
                         while (line != null) {

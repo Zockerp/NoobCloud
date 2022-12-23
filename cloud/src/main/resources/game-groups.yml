@@ -5,3 +5,4 @@ games:
     maxAmount: 5
     startPlayerCount: 10
     lobby: true
+    static: false

@@ -12,6 +12,7 @@ data class ServerAddPacket(
     var groupName: String,
     var groupType: String,
     var port: Int,
+    var static: Boolean,
     var gameState: String
 ) : Packet() {
     override fun read(byteBuf: ByteBuf) {
@@ -20,6 +21,7 @@ data class ServerAddPacket(
         groupName = readString(byteBuf)
         groupType = readString(byteBuf)
         port = byteBuf.readInt()
+        static = byteBuf.readBoolean()
         gameState = readString(byteBuf)
     }
 
@@ -29,6 +31,7 @@ data class ServerAddPacket(
         writeString(groupName, byteBuf)
         writeString(groupType, byteBuf)
         byteBuf.writeInt(port)
+        byteBuf.writeBoolean(static)
         writeString(gameState, byteBuf)
     }
 }

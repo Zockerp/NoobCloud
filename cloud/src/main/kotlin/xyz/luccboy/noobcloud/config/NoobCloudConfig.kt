@@ -21,6 +21,7 @@ class NoobCloudConfig {
 
     fun createConfigFiles(): NoobCloudConfig {
         exportResource("config.yml", "configs")
+        exportResource("messages.yml", "configs")
         exportResource("proxy-groups.yml", "configs")
         exportResource("game-groups.yml", "configs")
         return this
@@ -28,7 +29,7 @@ class NoobCloudConfig {
 
     private val mapper: ObjectMapper = YAMLMapper().registerKotlinModule()
 
-    fun loadConfigs(): NoobCloudConfig {
+    fun loadConfigs() {
         try {
             noobCloudConfigData = Files.newBufferedReader(Path("configs/config.yml")).use { mapper.readValue(it, NoobCloudConfigData::class.java) }
             proxyGroupsConfigData = Files.newBufferedReader(Path("configs/proxy-groups.yml")).use { mapper.readValue(it, ProxyGroupConfigData::class.java) }
@@ -39,8 +40,6 @@ class NoobCloudConfig {
         } catch (exception: Exception) {
             NoobCloud.instance.logger.error(exception)
         }
-
-        return this
     }
 
     fun addProxyGroup(proxyData: ProxyData) {

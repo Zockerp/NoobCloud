@@ -1,13 +1,10 @@
 package xyz.luccboy.noobcloud.console
 
-import xyz.luccboy.noobcloud.console.commands.ClearCommand
-import xyz.luccboy.noobcloud.console.commands.HelpCommand
+import xyz.luccboy.noobcloud.console.commands.*
 
 class CommandHandler {
 
     val commandList: MutableList<Command> = mutableListOf()
-
-    fun registerCommand(command: Command) = commandList.add(command)
 
     fun handleInput(input: Array<String>): Boolean {
         val commandName: String = input[0]
@@ -21,9 +18,14 @@ class CommandHandler {
         return false
     }
 
-    init {
+    fun registerCommands() {
         commandList.add(HelpCommand())
         commandList.add(ClearCommand())
+        commandList.add(StopCommand())
+        commandList.add(GroupCommand())
+        commandList.add(ServerCommand())
+        commandList.add(ScreenCommand())
+        commandList.add(RestartCommand())
     }
 
 }

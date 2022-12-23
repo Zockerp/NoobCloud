@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.7.10"
+    kotlin("jvm") version "1.7.22"
     id("maven-publish")
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
@@ -24,7 +24,7 @@ allprojects {
 
     kotlin {
         jvmToolchain {
-            languageVersion.set(JavaLanguageVersion.of(18))
+            languageVersion.set(JavaLanguageVersion.of(17))
         }
     }
 

@@ -12,6 +12,7 @@ import xyz.luccboy.noobcloud.plugin.shared.network.NetworkHandler
 import net.minestom.server.MinecraftServer
 import net.minestom.server.event.GlobalEventHandler
 import net.minestom.server.extensions.Extension
+import xyz.luccboy.noobcloud.plugin.shared.config.Config
 import java.util.*
 
 class NoobCloudMinestomPlugin : Extension() {
@@ -24,6 +25,8 @@ class NoobCloudMinestomPlugin : Extension() {
     init {
         instance = this
     }
+
+    val config: Config = Config(GroupType.GAME)
 
     lateinit var databaseManager: DatabaseManager
     lateinit var noobCloudAPI: AbstractNoobCloudAPI
@@ -40,6 +43,8 @@ class NoobCloudMinestomPlugin : Extension() {
                 "|_|  |__||_______||_______||_______||_______||_______||_______||_______||______| \n" +
                 "by Luccboy\n"
         )
+
+        config.loadConfig()
 
         databaseManager = DatabaseManager(databaseEnabled, databaseHost, databaseUser, databasePassword, databaseName, databasePort).connect()
         nettyClient = NettyClient(GroupType.GAME)
@@ -59,7 +64,6 @@ class NoobCloudMinestomPlugin : Extension() {
         nettyClient.shutdown()
     }
 
-    val prefix: String = System.getProperty("prefix")
     val name: String = System.getProperty("name")
     val group: String = System.getProperty("group")
     val uuid: UUID = UUID.fromString(System.getProperty("uuid"))

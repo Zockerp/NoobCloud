@@ -26,6 +26,12 @@ interface Group {
     val lobby: Boolean
 
     /**
+     * Indicates whether the group is static or not
+     */
+    @get:JvmName("isStatic")
+    val static: Boolean
+
+    /**
      * Gets all active servers in this group
      * @return A list of all [servers][Server]
      */

@@ -15,9 +15,13 @@ import com.velocitypowered.api.event.player.ServerPostConnectEvent
 import com.velocitypowered.api.proxy.Player
 import com.velocitypowered.api.proxy.server.RegisteredServer
 import net.kyori.adventure.text.Component
+import xyz.luccboy.noobcloud.plugin.shared.config.Messages
 import java.util.*
 
 class PlayerListener {
+
+    private val messages: Messages = NoobCloudVelocityPlugin.instance.config.messages
+    private val prefix: String = messages.prefix
 
     // Player-Join
     @Subscribe(order = PostOrder.FIRST)
@@ -28,7 +32,7 @@ class PlayerListener {
         freeLobby.ifPresentOrElse({ server ->
             event.setInitialServer(server)
         }, {
-            player.disconnect(Component.text(NoobCloudVelocityPlugin.instance.prefix + "§cNo suitable server could be found!"))
+            player.disconnect(Component.text(prefix + messages.noLobbyFound))
         })
     }
 
@@ -61,7 +65,7 @@ class PlayerListener {
         freeLobby.ifPresentOrElse({ server ->
             if (player.currentServer.isPresent) event.result = RedirectPlayer.create(server)
         }, {
-            player.disconnect(Component.text(NoobCloudVelocityPlugin.instance.prefix + "§cCould not connect to a default or fallback server."))
+            player.disconnect(Component.text(prefix + messages.noLobbyFound))
             NoobCloudVelocityPlugin.instance.nettyClient.sendPacket(PlayerQuitProxyPacket(NoobCloudVelocityPlugin.instance.uuid, NoobCloudVelocityPlugin.instance.group))
         })
     }
