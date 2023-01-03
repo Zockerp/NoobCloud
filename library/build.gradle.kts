@@ -1,5 +1,5 @@
 plugins {
-    id("org.jetbrains.kotlin.plugin.noarg") version "1.7.22"
+    id("org.jetbrains.kotlin.plugin.noarg") version "1.8.0"
 }
 
 dependencies {
