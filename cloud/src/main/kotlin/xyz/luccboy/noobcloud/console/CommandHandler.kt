@@ -26,6 +26,7 @@ class CommandHandler {
         commandList.add(ServerCommand())
         commandList.add(ScreenCommand())
         commandList.add(RestartCommand())
+        commandList.add(CmdCommand())
     }
 
 }

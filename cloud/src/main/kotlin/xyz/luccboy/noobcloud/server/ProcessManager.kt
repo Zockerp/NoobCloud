@@ -51,7 +51,7 @@ class ProcessManager {
             "-Daddress=" + NoobCloud.instance.cloudConfig.noobCloudConfigData.config.address,
             "-DstartPlayerCount=" + proxyData.startPlayerCount,
             // Database
-            "-DdatabaseEnabled=" + NoobCloud.instance.cloudConfig.noobCloudConfigData.playerDatabase.enabled,
+            "-DdatabaseType=" + NoobCloud.instance.cloudConfig.noobCloudConfigData.playerDatabase.type,
             "-DdatabaseHost=" + NoobCloud.instance.cloudConfig.noobCloudConfigData.playerDatabase.host,
             "-DdatabasePort=" + NoobCloud.instance.cloudConfig.noobCloudConfigData.playerDatabase.port,
             "-DdatabaseName=" + NoobCloud.instance.cloudConfig.noobCloudConfigData.playerDatabase.database,
@@ -86,7 +86,7 @@ class ProcessManager {
             "-Dlobby=" + gameData.lobby,
             "-DstartPlayerCount=" + gameData.startPlayerCount,
             // Database
-            "-DdatabaseEnabled=" + NoobCloud.instance.cloudConfig.noobCloudConfigData.playerDatabase.enabled,
+            "-DdatabaseType=" + NoobCloud.instance.cloudConfig.noobCloudConfigData.playerDatabase.type,
             "-DdatabaseHost=" + NoobCloud.instance.cloudConfig.noobCloudConfigData.playerDatabase.host,
             "-DdatabasePort=" + NoobCloud.instance.cloudConfig.noobCloudConfigData.playerDatabase.port,
             "-DdatabaseName=" + NoobCloud.instance.cloudConfig.noobCloudConfigData.playerDatabase.database,

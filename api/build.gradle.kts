@@ -10,8 +10,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.github.Minestom:Minestom:eb06ba8664")
-    compileOnly("com.velocitypowered:velocity-api:3.1.2-SNAPSHOT")
+    compileOnly("com.github.Minestom:Minestom:24cc458659")
+    compileOnly("com.velocitypowered:velocity-api:3.2.0-SNAPSHOT")
 
     dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.7.20")
 }

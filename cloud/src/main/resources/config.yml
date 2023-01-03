@@ -6,8 +6,10 @@ config:
   javaPath: 'java'
 
 playerDatabase:
-  enabled: false
+  # Available types: MYSQL, MONGODB, DISABLED
+  type: DISABLED
   host: 'localhost'
+  # MYSQL default port: 3306, MONGODB default port: 27017
   port: 3306
   database: 'noobcloud'
   username: 'username'

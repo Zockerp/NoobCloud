@@ -14,6 +14,7 @@ import xyz.luccboy.noobcloud.library.network.packets.server.RequestServerStartPa
 import xyz.luccboy.noobcloud.library.network.packets.server.RequestServerStopPacket
 import com.google.common.collect.BiMap
 import com.google.common.collect.HashBiMap
+import xyz.luccboy.noobcloud.library.network.packets.server.ExecuteCmdPacket
 import kotlin.reflect.KClass
 
 class PacketRegistry {
@@ -35,28 +36,29 @@ class PacketRegistry {
         registerPacket(ProxyServerStoppedPacket::class, 4)
         // Server-Packets
         registerPacket(CopyServerTemplatePacket::class, 5)
-        registerPacket(RequestServerStartPacket::class, 6)
-        registerPacket(RequestServerStopPacket::class, 7)
+        registerPacket(ExecuteCmdPacket::class, 6)
+        registerPacket(RequestServerStartPacket::class, 7)
+        registerPacket(RequestServerStopPacket::class, 8)
         // API-Packets
-        registerPacket(GroupAddPacket::class, 8)
-        registerPacket(GroupRemovePacket::class, 9)
-        registerPacket(DistributeServerMessagePacket::class, 10)
-        registerPacket(ServerMessagePacket::class, 11)
-        registerPacket(PlayerAddPacket::class, 12)
-        registerPacket(PlayerJoinGamePacket::class, 13)
-        registerPacket(PlayerJoinProxyPacket::class, 14)
-        registerPacket(PlayerQuitGamePacket::class, 15)
-        registerPacket(PlayerQuitProxyPacket::class, 16)
-        registerPacket(PlayerRemovePacket::class, 17)
-        registerPacket(SendPlayerPacket::class, 18)
-        registerPacket(SendPlayerRequestPacket::class, 19)
-        registerPacket(ServerAddPacket::class, 20)
-        registerPacket(ServerRemovePacket::class, 21)
-        registerPacket(ServerUpdateGameStatePacket::class, 22)
-        registerPacket(ServerUpdateMotdPacket::class, 23)
-        registerPacket(ServerUpdateOnlineCountPacket::class, 24)
-        registerPacket(SetGameStatePacket::class, 25)
-        registerPacket(SetMotdPacket::class, 26)
+        registerPacket(GroupAddPacket::class, 9)
+        registerPacket(GroupRemovePacket::class, 10)
+        registerPacket(DistributeServerMessagePacket::class, 11)
+        registerPacket(ServerMessagePacket::class, 12)
+        registerPacket(PlayerAddPacket::class, 13)
+        registerPacket(PlayerJoinGamePacket::class, 14)
+        registerPacket(PlayerJoinProxyPacket::class, 15)
+        registerPacket(PlayerQuitGamePacket::class, 16)
+        registerPacket(PlayerQuitProxyPacket::class, 17)
+        registerPacket(PlayerRemovePacket::class, 18)
+        registerPacket(SendPlayerPacket::class, 19)
+        registerPacket(SendPlayerRequestPacket::class, 20)
+        registerPacket(ServerAddPacket::class, 21)
+        registerPacket(ServerRemovePacket::class, 22)
+        registerPacket(ServerUpdateGameStatePacket::class, 23)
+        registerPacket(ServerUpdateMotdPacket::class, 24)
+        registerPacket(ServerUpdateOnlineCountPacket::class, 25)
+        registerPacket(SetGameStatePacket::class, 26)
+        registerPacket(SetMotdPacket::class, 27)
     }
 
 }

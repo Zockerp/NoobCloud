@@ -19,6 +19,7 @@ import xyz.luccboy.noobcloud.library.network.packets.api.player.PlayerRemovePack
 import xyz.luccboy.noobcloud.library.network.packets.api.player.SendPlayerPacket
 import xyz.luccboy.noobcloud.library.network.packets.api.server.*
 import xyz.luccboy.noobcloud.library.network.packets.game.GameServerRegisterPacket
+import xyz.luccboy.noobcloud.library.network.packets.server.ExecuteCmdPacket
 import xyz.luccboy.noobcloud.library.network.protocol.Packet
 import xyz.luccboy.noobcloud.plugin.minestom.NoobCloudMinestomPlugin
 import xyz.luccboy.noobcloud.plugin.shared.api.AbstractNoobCloudAPI
@@ -48,6 +49,15 @@ class NetworkHandler(private val groupType: GroupType, private val nettyClient: 
 
                 NoobCloudVelocityPlugin.instance.server.allPlayers.filter { it.hasPermission("noobcloud.admin") }.forEach {
                     it.sendMessage(Component.text(messages.prefix + messages.getMessage(messages.serverStarted, gameServerRegisterPacket.name)))
+                }
+            }
+            // cmd command from cloud console
+            is ExecuteCmdPacket -> {
+                val executeCmdPacket: ExecuteCmdPacket = packet
+                if (groupType == GroupType.GAME) {
+                    MinecraftServer.getCommandManager().execute(MinecraftServer.getCommandManager().consoleSender, executeCmdPacket.command)
+                } else {
+                    NoobCloudVelocityPlugin.instance.server.commandManager.executeAsync(NoobCloudVelocityPlugin.instance.server.consoleCommandSource, executeCmdPacket.command)
                 }
             }
 

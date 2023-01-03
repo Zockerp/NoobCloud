@@ -13,6 +13,7 @@ import net.minestom.server.MinecraftServer
 import net.minestom.server.event.GlobalEventHandler
 import net.minestom.server.extensions.Extension
 import xyz.luccboy.noobcloud.plugin.shared.config.Config
+import xyz.luccboy.noobcloud.plugin.shared.database.DatabaseType
 import java.util.*
 
 class NoobCloudMinestomPlugin : Extension() {
@@ -46,7 +47,7 @@ class NoobCloudMinestomPlugin : Extension() {
 
         config.loadConfig()
 
-        databaseManager = DatabaseManager(databaseEnabled, databaseHost, databaseUser, databasePassword, databaseName, databasePort).connect()
+        databaseManager = DatabaseManager(databaseType, databaseHost, databaseUser, databasePassword, databaseName, databasePort).connect()
         nettyClient = NettyClient(GroupType.GAME)
         noobCloudAPI = AbstractNoobCloudAPI(nettyClient, databaseManager)
         nettyClient.future.channel().pipeline().addLast("network-handler", NetworkHandler(GroupType.GAME, nettyClient, noobCloudAPI))
@@ -73,7 +74,7 @@ class NoobCloudMinestomPlugin : Extension() {
     val startPlayerCount: Int = System.getProperty("startPlayerCount").toInt()
 
     // Database
-    private val databaseEnabled: Boolean = System.getProperty("databaseEnabled").toBoolean()
+    private val databaseType: DatabaseType = DatabaseType.valueOf(System.getProperty("databaseType"))
     private val databaseHost: String = System.getProperty("databaseHost")
     private val databasePort: Int = System.getProperty("databasePort").toInt()
     private val databaseName: String = System.getProperty("databaseName")

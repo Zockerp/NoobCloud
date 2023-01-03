@@ -5,5 +5,5 @@ enum class GameState {
     AVAILABLE,
     COUNTDOWN,
     INGAME,
-    ENDING,
+    ENDING
 }

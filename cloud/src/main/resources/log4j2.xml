@@ -2,7 +2,7 @@
 <Configuration>
     <Appenders>
         <TerminalConsole name="Console">
-            <PatternLayout pattern="%highlightError{[%d{HH:mm:ss} %level]: %msg%n}"/>
+            <PatternLayout pattern="%highlightError{[%d{HH:mm:ss} %level]: %msg%n%xEx}"/>
         </TerminalConsole>
         <RollingRandomAccessFile name="File" fileName="logs/latest.log" filePattern="logs/%d{yyyy-MM-dd}-%i.log">
             <PatternLayout pattern="[%d{dd.MM.yyyy HH:mm:ss}] [%level]: %msg%n" />

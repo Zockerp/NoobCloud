@@ -24,6 +24,7 @@ import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import xyz.luccboy.noobcloud.plugin.velocity.commands.HubCommand
 import xyz.luccboy.noobcloud.plugin.shared.config.Config
+import xyz.luccboy.noobcloud.plugin.shared.database.DatabaseType
 import java.util.*
 
 @Plugin(id = "noobcloud", name = "NoobCloud", version = "1.0-SNAPSHOT", description = "NoobCloud-Plugin", authors = ["Luccboy"])
@@ -61,7 +62,7 @@ class NoobCloudVelocityPlugin @Inject constructor(val server: ProxyServer, val l
 
         config.loadConfig()
 
-        databaseManager = DatabaseManager(databaseEnabled, databaseHost, databaseUser, databasePassword, databaseName, databasePort).connect()
+        databaseManager = DatabaseManager(databaseType, databaseHost, databaseUser, databasePassword, databaseName, databasePort).connect()
         nettyClient = NettyClient(GroupType.PROXY)
         noobCloudAPI = AbstractNoobCloudAPI(nettyClient, databaseManager)
         nettyClient.future.channel().pipeline().addLast("network-handler", NetworkHandler(GroupType.PROXY, nettyClient, noobCloudAPI))
@@ -89,7 +90,7 @@ class NoobCloudVelocityPlugin @Inject constructor(val server: ProxyServer, val l
     val startPlayerCount: Int = System.getProperty("startPlayerCount").toInt()
 
     // Database
-    private val databaseEnabled: Boolean = System.getProperty("databaseEnabled").toBoolean()
+    private val databaseType: DatabaseType = DatabaseType.valueOf(System.getProperty("databaseType"))
     private val databaseHost: String = System.getProperty("databaseHost")
     private val databasePort: Int = System.getProperty("databasePort").toInt()
     private val databaseName: String = System.getProperty("databaseName")

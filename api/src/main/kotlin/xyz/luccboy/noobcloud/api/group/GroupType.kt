@@ -5,12 +5,12 @@ package xyz.luccboy.noobcloud.api.group
  */
 enum class GroupType {
     /**
-     * Represents a proxy group with velocity servers
+     * Represents a proxy group with Velocity servers
      */
     PROXY,
 
     /**
-     * Represents a game group with minestom servers
+     * Represents a game group with Minestom servers
      */
     GAME
 }

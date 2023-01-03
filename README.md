@@ -24,8 +24,5 @@ feedback, I appreciate pull requests to update and enhance this system. Please t
 
 ## ToDo
 - [ ] Global templates
-- [ ] Static templates
-- [ ] Send commands to servers
-- [ ] Make messages and prefix editable
-- [ ] BungeeCord-Support (if requested)
-- [ ] [Krypton](https://github.com/KryptonMC/Krypton)-Support
+- [ ] edit command
+- [ ] info/list command

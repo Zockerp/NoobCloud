@@ -27,5 +27,5 @@ enum class GameState {
     /**
      * Indicates that the minigame has ended
      */
-    ENDING,
+    ENDING
 }
